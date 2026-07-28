@@ -143,7 +143,7 @@ if image_to_process is not None:
 # GAMAAGGAMA FI QOODINSA QABXII (EXCEL/CSV)
 # ==========================================
 if df is not None:
-    # Step 3: Qindaa'ina Kolonootaa (Dursinee Kolonii akka filataniif qopheessuu baay'ina saalaaf barbaachisa)
+    # Step 2 & 3: Qindaa'ina Kolonootaa
     st.subheader("⚙️ Step 2 & 3: Qindaa'ina Kolonootaa fi Daataa Waliigalaa")
     all_columns = df.columns.tolist()
 
@@ -166,10 +166,12 @@ if df is not None:
     st.markdown("---")
     st.subheader("👀 Daataa Jalqabaa fi Baay'ina Barattoota Waliigalaa")
     
-    # Herrega Baay'ina Waliigalaa, Dhiiraa, fi Dhalaaa
-    total_students = len(df)
+    # Herrega Baay'ina Dhiiraa fi Dhalaaa sirriitti argachuuf
     dhiira_total = len(df[df[gender_col].astype(str).str.contains("Dhi|M", case=False)])
     dhalaa_total = len(df[df[gender_col].astype(str).str.contains("Dha|F", case=False)])
+    
+    # Waliigalli barattootaa amma Dhiira + Dhalaa ta'a
+    total_students = dhiira_total + dhalaa_total
 
     # Metric Cards agarsiisuuf
     m_col1, m_col2, m_col3 = st.columns(3)
