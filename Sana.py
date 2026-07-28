@@ -17,8 +17,8 @@ st.set_page_config(
 )
 
 # Header & Creator Info
-st.title("🏫 Appii Barattoota Daree Keessatti Dandeetti Sadiin Qoodu")
-st.markdown("### Xiinxala Dandeettii Barattootaa, Qoodinsa Koorniyaa fi Kuusaa Ragaa (Save/Delete)")
+st.title("🏫 TRIAD APP")
+st.markdown("### Appii Barattoota Daree Keessatti Dandeetti Sadiin Qoodu")
 st.sidebar.info("Designed & Developed by **KN (Kitesa Negasa)**")
 
 # ==========================================
@@ -35,9 +35,9 @@ else:
     st.sidebar.warning("Suuraan 'qixxeessaa.jpg' jedhu hin argamne. Maaloo foldera koodii kana wajjin jiru keessa kaa'i.")
 
 # Seensa Dhuunfaa Kee
-st.sidebar.markdown("### 📝 Seensa Dhuunfaa (Introduction)")
+st.sidebar.markdown("### 📝 Seensa  (Introduction)")
 st.sidebar.write(
-    "Ani Barsiisaa fi Qorataa Saayinsii (Physics Teacher & Researcher) yoo ta'u, "
+    "Baga Nagaan Gara  TRIAD appilikeeshiniikootti nagaan Dhuftan! Ani barsiisaa Qixxeessaa Nagaasaa Jedhama.Mogaasni maqaa appikoo TRIAD jedhu Afaan Ingiliffaan (Tracking Rates in Academic Development)itti hiikama, "
     "hojiiwwan teeknoolojii, dizaayinii appiiwwanii fi barnootaa irratti nan bobba'a."
 )
 
