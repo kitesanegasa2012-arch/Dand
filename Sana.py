@@ -49,15 +49,15 @@ st.sidebar.write(
 )
 # ==========================================
 
-# Sidebar - Seensa fi Qajeelfama Itti Fayyadamaa
+# Sidebar - Qajeelfama Itti Fayyadamaa
 st.sidebar.markdown("---")
 st.sidebar.subheader("📖 Qajeelfama Itti Fayyadamaa")
 st.sidebar.markdown(
     """
-1. **Madda Ragaa:** Faayilii haaraa (Excel/CSV/Suuraa) fe'uu ykn ragaa kanaan dura kuufame (Saved) filachuu dandeessa.
-2. **Kuusuu (Save):** Faayiliin fe'ame akka kuufamuuf buttoon 'Save' ni tajaajila.
-3. **Qindaa'ina:** Kolonii maqaa, saala, fi gosa barnootaa filadhu.
-4. **Bu'aa Ilaali:** Gosa barnootaan dandeettii barattootaa (Ciccimoo, Giddu-galeeyyii, Suuta) koorniyaan wajjin argadhu!
+1. **Madda Ragaa:** Faayilii haaraa (Excel/CSV/Suuraa) fe'uu ykn ragaa kanaan dura kuufame (Saved) filachuun dursa galchuu.
+2. **Kuusuu (Save):** Faayiliin fe'ame akka kuufamuuf buttoon 'Save' xuquu.
+3. **Qindaa'ina:** Column maqaa, saala, fi gosa barnootaa keessatti argamu filadhu.
+4. **Bu'aa Ilaali:** Gosa barnootaan dandeettii barattootaa (Ciccimoo, Giddu-galeeyyii, Suuta baratoo) koorniyaan xiinxalu!
 """
 )
 
