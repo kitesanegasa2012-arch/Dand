@@ -21,6 +21,37 @@ st.title("🏫 Appii Qoodinsa Qabxii Barattootaa Gosa Barnootaan")
 st.markdown("### Gamaaggama Dandeettii Barattootaa, Qoodinsa Koorniyaa fi Kuusaa Ragaa (Save/Delete)")
 st.sidebar.info("Designed & Developed by **KN (Kitesa Negasa)**")
 
+# ==========================================
+# IDDOO ITTI SUURAA, SEENSA FI KAAYYOO GALCHITU
+# ==========================================
+st.sidebar.markdown("---")
+st.sidebar.subheader("👤 Odeeffannoo Ogeessaa")
+
+# 1. Suuraa Kee Galchuuf (Bakka 'suuraa_kee.jpg' jedhutti maqaa suuraa keetii galchita ykn appii wajjin foldara tokko keessatti kaa'i)
+# Yoo feete suuraa kee asumaan fe'uu (upload) dandeessa:
+uploaded_profile_pic = st.sidebar.file_uploader("Suuraa Kee Fe'i (Upload Profile Pic)", type=["png", "jpg", "jpeg"])
+if uploaded_profile_pic is not None:
+    profile_image = Image.open(uploaded_profile_pic)
+    st.sidebar.image(profile_image, caption="Kitesa Negasa (KN)", use_container_width=True)
+else:
+    # Yoo suuraa fe'uu baattees suuraa dizzayinii keessatti qabdu fayyadamuuf asitti qindeessuu dandeessa
+    st.sidebar.image("https://via.placeholder.com/150", caption="Kitesa Negasa (KN)", use_container_width=True)
+
+# 2. Seensa Kee Barreessuuf
+st.sidebar.markdown("### 📝 Seensa Dhuunfaa (About Me)")
+st.sidebar.write(
+    "Asitti seensa dhuunfaa kee barreessi... "
+    "(Fkn: Ani barsiisaa fi qorataa saayinsii yoo ta'u, hojiiwwan teeknoolojii fi barnootaa irratti nan bobba'a.)"
+)
+
+# 3. Kaayyoo Appii Kanaa Barreessuuf
+st.sidebar.markdown("### 🎯 Kaayyoo Appichaa (App Objective)")
+st.sidebar.write(
+    "Asitti kaayyoo appii kanaa barreessi... "
+    "(Fkn: Kaayyoon appii kanaa qabxii barattootaa salphaatti sakatta'uudhaan qoodinsa koorniyaa fi dandeettii isaanii adda baasuudha.)"
+)
+# ==========================================
+
 # Sidebar - Seensa fi Qajeelfama Itti Fayyadamaa
 st.sidebar.markdown("---")
 st.sidebar.subheader("📖 Qajeelfama Itti Fayyadamaa")
