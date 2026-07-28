@@ -166,16 +166,14 @@ if df is not None:
     st.markdown("---")
     st.subheader("👀 Daataa Jalqabaa fi Baay'ina Barattoota Waliigalaa")
     
-    # Herrega Baay'ina Dhiiraa fi Dhalaaa sirriitti argachuuf
+    # Herrega Baay'ina Dhiiraa fi Dhalaaa waliigalaa (Galmaa'an hunda)
     dhiira_total = len(df[df[gender_col].astype(str).str.contains("Dhi|M", case=False)])
     dhalaa_total = len(df[df[gender_col].astype(str).str.contains("Dha|F", case=False)])
-    
-    # Waliigalli barattootaa amma Dhiira + Dhalaa ta'a
     total_students = dhiira_total + dhalaa_total
 
-    # Metric Cards agarsiisuuf
+    # Metric Cards agarsiisuuf (Waliigala)
     m_col1, m_col2, m_col3 = st.columns(3)
-    m_col1.metric("👥 Waliigala Barattootaa", f"{total_students}")
+    m_col1.metric("👥 Waliigala Galmaa'an", f"{total_students}")
     m_col2.metric("👦 Dhiira", f"{dhiira_total}")
     m_col3.metric("👧 Dhalaa", f"{dhalaa_total}")
 
@@ -227,6 +225,28 @@ if df is not None:
             suuta = temp_df[
                 (temp_df["Calculated_Score"] < 50) & (temp_df["Calculated_Score"].notna())
             ]
+            
+            # Barattoota qoraman (Ciccimoo + Giddu-galeeyyii + Suuta barattoota)
+            qoraman_df = pd.concat([ciccimoo, giddu, suuta])
+            
+            # Barattoota qabxii hin qabne (None / Absent / Missing)
+            none_df = temp_df[temp_df["Calculated_Score"].isna()]
+
+            # Baay'ina waligalaa barattoota qoraman (Dhiira + Dhalaa)
+            dhiira_qoraman = len(qoraman_df[qoraman_df[gender_col].astype(str).str.contains("Dhi|M", case=False)])
+            dhalaa_qoraman = len(qoraman_df[qoraman_df[gender_col].astype(str).str.contains("Dha|F", case=False)])
+            waliigala_qoraman = dhiira_qoraman + dhalaa_qoraman
+
+            # Baay'ina barattoota None ta'an
+            dhiira_none = len(none_df[none_df[gender_col].astype(str).str.contains("Dhi|M", case=False)])
+            dhalaa_none = len(none_df[none_df[gender_col].astype(str).str.contains("Dha|F", case=False)])
+            waliigala_none = dhiira_none + dhalaa_none
+
+            # Agarsiisuu Baay'ina Qoraman fi Galmaa'an Gosa Barnoota Kanaan
+            st.info(f"📊 **Istaatistikaa Gosa Barnootaa Kanaa ({subj}):**\n"
+                    f"- **Waliigala Barattoota Qoraman:** {waliigala_qoraman} (👦 Dhiira: {dhiira_qoraman} | 👧 Dhalaa: {dhalaa_qoraman})\n"
+                    f"- **Barattoota Qabxii Hin Qabne (None/Absent):** {waliigala_none} (👦 Dhiira: {dhiira_none} | 👧 Dhalaa: {dhalaa_none})\n"
+                    f"- **Waliigala Galmaa'an (Qoraman + None):** {waliigala_qoraman + waliigala_none}")
 
             display_cols = list(dict.fromkeys([name_col, gender_col, subj]))
 
