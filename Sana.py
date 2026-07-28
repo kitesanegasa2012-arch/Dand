@@ -143,12 +143,8 @@ if image_to_process is not None:
 # GAMAAGGAMA FI QOODINSA QABXII (EXCEL/CSV)
 # ==========================================
 if df is not None:
-    # Step 2: Preview Daataa
-    st.subheader("👀 Step 2: Daataa Jalqabaa (Raw Data Preview)")
-    st.dataframe(df.head(), use_container_width=True)
-
-    # Step 3: Qindaa'ina Kolonootaa
-    st.subheader("⚙️ Step 3: Qindaa'ina Kolonootaa fi Ulaagaa")
+    # Step 3: Qindaa'ina Kolonootaa (Dursinee Kolonii akka filataniif qopheessuu baay'ina saalaaf barbaachisa)
+    st.subheader("⚙️ Step 2 & 3: Qindaa'ina Kolonootaa fi Daataa Waliigalaa")
     all_columns = df.columns.tolist()
 
     col_a, col_b, col_c = st.columns(3)
@@ -165,6 +161,23 @@ if df is not None:
             "Kolonoota Gosa Barnootaa:",
             [col for col in all_columns if col not in [name_col, gender_col]],
         )
+
+    # 📊 Iddoo Data Preview fi Baay'ina Barattoota Waliigalaa (Summary Metrics)
+    st.markdown("---")
+    st.subheader("👀 Daataa Jalqabaa fi Baay'ina Barattoota Waliigalaa")
+    
+    # Herrega Baay'ina Waliigalaa, Dhiiraa, fi Dhalaaa
+    total_students = len(df)
+    dhiira_total = len(df[df[gender_col].astype(str).str.contains("Dhi|M", case=False)])
+    dhalaa_total = len(df[df[gender_col].astype(str).str.contains("Dha|F", case=False)])
+
+    # Metric Cards agarsiisuuf
+    m_col1, m_col2, m_col3 = st.columns(3)
+    m_col1.metric("👥 Waliigala Barattootaa", f"{total_students}")
+    m_col2.metric("👦 Dhiira", f"{dhiira_total}")
+    m_col3.metric("👧 Dhalaa", f"{dhalaa_total}")
+
+    st.dataframe(df.head(), use_container_width=True)
 
     # Quiz Qabxii Gara 100tti jijjiiruu (Scaling option)
     st.markdown("---")
