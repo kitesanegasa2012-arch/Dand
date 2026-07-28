@@ -11,21 +11,21 @@ os.makedirs(SAVE_DIR, exist_ok=True)
 
 # App Configuration
 st.set_page_config(
-    page_title="Appii Qoodinsa Qabxii Barattootaa",
+    page_title="TRIAD",
     page_icon="📚",
     layout="wide"
 )
 
 # Header & Creator Info
-st.title("🏫 Appii Qoodinsa Qabxii Barattootaa Gosa Barnootaan")
-st.markdown("### Gamaaggama Dandeettii Barattootaa, Qoodinsa Koorniyaa fi Kuusaa Ragaa (Save/Delete)")
+st.title("🏫 Appii Barattoota Daree Keessatti Dandeetti Sadiin Qoodu")
+st.markdown("### Xiinxala Dandeettii Barattootaa, Qoodinsa Koorniyaa fi Kuusaa Ragaa (Save/Delete)")
 st.sidebar.info("Designed & Developed by **KN (Kitesa Negasa)**")
 
 # ==========================================
 # IDDOO ITTI SUURAA, SEENSA FI KAAYYOO GALCHITU
 # ==========================================
 st.sidebar.markdown("---")
-st.sidebar.subheader("👤 Odeeffannoo Ogeessaa")
+st.sidebar.subheader("👤 Suura Kalaqaa")
 
 # Suuraa 'qixxeessaa.jpg' jedhu foldera keessaa barbaadee fiduuf
 profile_pic_path = "qixxeessaa.jpg"
@@ -35,7 +35,7 @@ else:
     st.sidebar.warning("Suuraan 'qixxeessaa.jpg' jedhu hin argamne. Maaloo foldera koodii kana wajjin jiru keessa kaa'i.")
 
 # Seensa Dhuunfaa Kee
-st.sidebar.markdown("### 📝 Seensa Dhuunfaa (About Me)")
+st.sidebar.markdown("### 📝 Seensa Dhuunfaa (Introduction)")
 st.sidebar.write(
     "Ani Barsiisaa fi Qorataa Saayinsii (Physics Teacher & Researcher) yoo ta'u, "
     "hojiiwwan teeknoolojii, dizaayinii appiiwwanii fi barnootaa irratti nan bobba'a."
@@ -45,7 +45,7 @@ st.sidebar.write(
 st.sidebar.markdown("### 🎯 Kaayyoo Appichaa (App Objective)")
 st.sidebar.write(
     "Kaayyoon appii kanaa qabxii barattootaa salphaatti sakatta'uudhaan qoodinsa koorniyaa, "
-    "dandeettii barattootaa (Ciccimoo, Giddu-galeeyyii, Suuta) fi galmee ragaa qindeessuudha."
+    "dandeettii barattootaa (Ciccimoo, Giddu-galeeyyii, Suuta baratoo )adda baasuun deggeruu fi galmee ragaa qindeessuudha."
 )
 # ==========================================
 
