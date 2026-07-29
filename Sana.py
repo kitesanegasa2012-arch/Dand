@@ -67,7 +67,7 @@ if not st.session_state.entered_app:
             <h3>Appii Barattoota Daree Keessatti Dandeetti Sadiin Qoodu</h3>
             <p style="font-size: 16px; max-width: 700px; margin: auto; line-height: 1.6;">
                 Baga Nagaan Gara TRIAD appilikeeshinii kootti nagaan Dhuftan! Mogaasni maqaa appikoo TRIAD jedhama.Hiikni TRIAD: 
-                Afaan Ingiliffaan <b>(Tracking Rates in Academic Development)</b> jechuudha. Barattoota dandeettii 
+                Agaan Ingiliffaan <b>(Tracking Rates in Academic Development)</b> jechuudha. Barattoota dandeettii 
                 isaaniitiin adda baasuun deggersa barbaachisaa kennuuf kan qopha'edha.
             </p>
             <br>
@@ -104,11 +104,27 @@ else:
     st.sidebar.warning("Suuraan 'qixxeessaa.jpg' jedhu hin argamne.")
 
 st.sidebar.markdown("### 📝 Seensa (Introduction)")
-st.sidebar.write(
-    "Barnoonni bu'uura misoomaa fi guddina hawaasaati. Sadarkaa amma irra jirruutti, saffisi fi qulqullinni barnootaa akka fooyya’uuf tooftaa ammayyaa’aa fayyadamuun dirqama ta’a. Akkaataa kanaan, rakkoolee qormaataa fi madaallii barattootaa keessatti mul’atan hiikuuf, akkasumas barsiisotaaf qorannoo dandeettii saffisaa (Diagnostic Assessment) kennuuf appilikeeshinii haaraa maqaan isaa TRIAD (Tracking Rates In Academic Development) jedhamu qopheesseera. Appiin kun sadarkaa mana barumsaa Aanaa Meettaa Walqixxeetti qulqullina barnootaa mirkaneessuuf shoora olaanaa qaba., "
-    "Hiika Gabajee TRIAD (Acronym Meaning)Manni abbummaa fi ergaan appilikeeshinii kanaa hiika gabajee armaan gadii qaba:T - Tracking (Hordofuu),R - Rates (Sadarkaalee / Safartuu),I - In (Keessatti),A - Academic (Barnootaa / Akkaadaamii)D - Development (Guddina / Misooma) Waliigalaatti TRIAD: "Guddina Akkaadaamii Barattootaa Sadarkaan Hordofuu."
-Appilikeeshiniin TRIAD kun sadarkaalee barnootaa gurguddoo fi sadarkaa hundatti tajaajiluu kan danda’uun dizaayini kan ta'eedha. Kunis:Manneen barnootaa sadarkaa 1ffaan dura (Pre-primary / Kindergartens)Manneen barnootaa sadarkaa 1ffaa (Kutaa 1 – 6)Manneen barnootaa sadarkaa giddu-galeessaa (Kutaa 7 – 8)
-Manneen barnootaa sadarkaa 2ffaa (Kutaa 9 – 12) keessatti milkaa’inaan hojjechuu ni danda’a.."
+st.sidebar.markdown(
+    """
+    Barnoonni bu'uura misoomaa fi guddina hawaasaati. Sadarkaa amma irra jirruutti, saffisi fi qulqullinni barnootaa akka fooyya’uuf tooftaa ammayyaa’aa fayyadamuun dirqama ta’a. 
+
+    Akkaataa kanaan, rakkoolee qormaataa fi madaallii barattootaa keessatti mul’atan hiikuuf, akkasumas barsiisotaaf qorannoo dandeettii saffisaa (Diagnostic Assessment) kennuuf appilikeeshinii haaraa maqaan isaa **TRIAD (Tracking Rates In Academic Development)** jedhamu qopheesseera. Appiin kun sadarkaa mana barumsaa Aanaa Meettaa Walqixxeetti qulqullina barnootaa mirkaneessuuf shoora olaanaa qaba.
+
+    **Hiika Gabajee TRIAD (Acronym Meaning):**
+    * **T** - Tracking (Hordofuu)
+    * **R** - Rates (Sadarkaalee / Safartuu)
+    * **I** - In (Keessatti)
+    * **A** - Academic (Barnootaa / Akkaadaamii)
+    * **D** - Development (Guddina / Misooma)
+
+    Waliigalaatti TRIAD: *"Guddina Akkaadaamii Barattootaa Sadarkaan Hordofuu."*
+
+    Appilikeeshiniin TRIAD kun sadarkaalee barnootaa gurguddoo fi sadarkaa hundatti tajaajiluu kan danda’uun dizaayini kan ta'eedha. Kunis:
+    * Manneen barnootaa sadarkaa 1ffaan dura (Pre-primary / Kindergartens)
+    * Manneen barnootaa sadarkaa 1ffaa (Kutaa 1 – 6)
+    * Manneen barnootaa sadarkaa giddu-galeessaa (Kutaa 7 – 8)
+    * Manneen barnootaa sadarkaa 2ffaa (Kutaa 9 – 12) keessatti milkaa’inaan hojjechuu ni danda’a.
+    """
 )
 
 st.sidebar.markdown("### 🎯 Kaayyoo Appichaa")
@@ -228,7 +244,6 @@ if df is not None:
     with col_c:
         subject_cols = st.multiselect("Kolomanii Gosa Barnootaa:", [col for col in all_columns if col not in [name_col, gender_col]], key="col_subjects_multiselect")
 
-    # Lakk. Eenyummaa, Kutaa, fi Daree (Kutaa fi Daree Excel irraa dubbisuu dhiisee iddoo Lakk ID cinaatti akka barreessitu qindaa'e)
     st.markdown("##### Qindaa'ina Lakk. Eenyummaa, Kutaa fi Daree Barataa")
     col_id_1, col_id_2, col_id_3 = st.columns(3)
     with col_id_1:
@@ -358,7 +373,6 @@ if df is not None:
         s_name = student_data[name_col]
         s_gender = student_data[gender_col] if gender_col in df.columns else "N/A"
         
-        # Kutaa fi Daree iddoo Lakk ID cinaatti guutte irraa fudhata
         s_grade = manual_grade if manual_grade else "N/A"
         s_section = manual_section if manual_section else "N/A"
         
