@@ -222,9 +222,19 @@ if df is not None:
     with col_a:
         name_col = st.selectbox("Kolomanii Maqaa Barataa:", all_columns, index=0, key="col_name_select")
     with col_b:
-        gender_col = st.selectbox("Kolonii Saala (Gender) - [Fkn: Dhi/Dha ykn M/F]:", all_columns, index=1 if len(all_columns) > 1 else 0, key="col_gender_select")
+        gender_col = st.selectbox("Kolonii Saala (Gender):", all_columns, index=1 if len(all_columns) > 1 else 0, key="col_gender_select")
     with col_c:
         subject_cols = st.multiselect("Kolomanii Gosa Barnootaa:", [col for col in all_columns if col not in [name_col, gender_col]], key="col_subjects_multiselect")
+
+    # Additional Column Selectors for ID Card (Kutaa, Daree, Lakkofsa/ID)
+    st.markdown("##### Qindaa'ina Dabalataa Kaardii Barataaf (Optional ID Details)")
+    col_d, col_e, col_f = st.columns(3)
+    with col_d:
+        grade_col = st.selectbox("Kolomanii Kutaa (Grade):", ["Hin jiru"] + all_columns, key="col_grade_select")
+    with col_e:
+        section_col = st.selectbox("Kolomanii Daree (Section):", ["Hin jiru"] + all_columns, key="col_section_select")
+    with col_f:
+        id_num_col = st.selectbox("Kolomanii Lakk. Eenyummaa/Roll (ID):", ["Hin jiru"] + all_columns, key="col_id_select")
 
     st.markdown("---")
     st.subheader("👀 Daataa Jalqabaa fi Baay'ina Barattoota Waliigalaa")
@@ -321,14 +331,16 @@ if df is not None:
             st.markdown("---")
 
     # ==========================================
-    # KAARDII BARATAA & WARAQAA RAGAA (WITH PHOTO)
+    # KAARDII BARATAA (STUDENT ID CARD)
     # ==========================================
     st.markdown("---")
-    st.subheader("🪪 Kaardii Barataa fi Waraqaa Ragaa Qopheessuu")
+    st.subheader("🪪 Kaardii Eenyummaa Barataa Qopheessuu (Student ID Card)")
+    
+    school_name_input = st.text_input("Maqaa Mana Barumsaa (School Name General):", "MANA BARUMSAA SADARKAA 2FFAA", key="school_name_general_input")
     
     student_list = df[name_col].unique().tolist() if name_col in df.columns else []
     
-    uploaded_student_photo = st.file_uploader("🖼️ Suuraa Barataa Kanaaf Fe'i (Optional for ID & Report Card)", type=["png", "jpg", "jpeg"], key="student_photo_upload_card")
+    uploaded_student_photo = st.file_uploader("🖼️ Suuraa Barataa Kanaaf Fe'i (Optional for ID Card)", type=["png", "jpg", "jpeg"], key="student_photo_upload_card")
     photo_html = "<div style='width:70px; height:85px; background:#ddd; border-radius:4px; display:inline-block; text-align:center; line-height:85px; font-size:10px; color:#555;'>Suuraa</div>"
     
     if uploaded_student_photo is not None:
@@ -337,12 +349,15 @@ if df is not None:
         photo_html = f"<img src='data:image/png;base64,{base64_img}' style='width:70px; height:85px; object-fit:cover; border-radius:4px; border: 1px solid #1b5e20;'>"
 
     if student_list:
-        selected_student = st.selectbox("Barataa Kaardii/Ragaa isaaf qopheessuuf barbaaddu filadhu:", student_list, key="id_card_student_select")
+        selected_student = st.selectbox("Barataa Kaardii Eenyummaa isaaf qopheessuuf barbaaddu filadhu:", student_list, key="id_card_student_select")
         
         if selected_student:
             student_data = df[df[name_col] == selected_student].iloc[0]
             s_name = student_data[name_col]
             s_gender = student_data[gender_col] if gender_col in df.columns else "N/A"
+            s_grade = student_data[grade_col] if grade_col != "Hin jiru" and grade_col in df.columns else "N/A"
+            s_section = student_data[section_col] if section_col != "Hin jiru" and section_col in df.columns else "N/A"
+            s_id_num = student_data[id_num_col] if id_num_col != "Hin jiru" and id_num_col in df.columns else "N/A"
             
             card_html = f"""
             <!DOCTYPE html>
@@ -350,7 +365,7 @@ if df is not None:
             <head>
                 <style>
                     .card {{
-                        width: 380px;
+                        width: 390px;
                         border: 2px solid #1b5e20;
                         border-radius: 12px;
                         padding: 15px;
@@ -360,15 +375,15 @@ if df is not None:
                         margin: auto;
                     }}
                     .flex-container {{ display: flex; align-items: center; gap: 15px; margin-top: 10px; }}
-                    .school-title {{ font-size: 16px; font-weight: bold; color: #1b5e20; text-align: center; }}
-                    .card-header {{ font-size: 12px; color: #555; text-align: center; margin-bottom: 5px; }}
-                    .student-info {{ font-size: 14px; margin: 4px 0; color: #333; }}
+                    .school-title {{ font-size: 15px; font-weight: bold; color: #1b5e20; text-align: center; }}
+                    .card-header {{ font-size: 11px; color: #555; text-align: center; margin-bottom: 5px; }}
+                    .student-info {{ font-size: 13px; margin: 3px 0; color: #333; }}
                     .footer {{ margin-top: 10px; font-size: 10px; color: #777; border-top: 1px solid #ddd; padding-top: 5px; text-align: center; }}
                 </style>
             </head>
             <body>
                 <div class="card">
-                    <div class="school-title">🏫 TRIAD APP SCHOOL</div>
+                    <div class="school-title">🏫 {school_name_input}</div>
                     <div class="card-header">Kaardii Eenyummaa Barataa (Student ID Card)</div>
                     <hr style="border: 0.5px solid #1b5e20;">
                     <div class="flex-container">
@@ -376,7 +391,8 @@ if df is not None:
                         <div>
                             <div class="student-info"><b>Maqaa:</b> {s_name}</div>
                             <div class="student-info"><b>Saala:</b> {s_gender}</div>
-                            <div class="student-info"><b>Daree:</b> Barataa/tuu Qormaataa</div>
+                            <div class="student-info"><b>Kutaa:</b> {s_grade} | <b>Daree:</b> {s_section}</div>
+                            <div class="student-info"><b>Lakk. ID:</b> {s_id_num}</div>
                         </div>
                     </div>
                     <div class="footer">Designed & Developed by Kitesa Negasa</div>
@@ -385,7 +401,7 @@ if df is not None:
             </html>
             """
             
-            st.components.v1.html(card_html, height=240)
+            st.components.v1.html(card_html, height=250)
             
             st.download_button(
                 label=f"📥 Kaardii {s_name} Buusuu (Download Card HTML)",
@@ -408,6 +424,9 @@ if df is not None:
             rc_student_data = df[df[name_col] == selected_student_rc].iloc[0]
             rc_name = rc_student_data[name_col]
             rc_gender = rc_student_data[gender_col] if gender_col in df.columns else "N/A"
+            rc_grade = rc_student_data[grade_col] if grade_col != "Hin jiru" and grade_col in df.columns else "N/A"
+            rc_section = rc_student_data[section_col] if section_col != "Hin jiru" and section_col in df.columns else "N/A"
+            rc_id_num = rc_student_data[id_num_col] if id_num_col != "Hin jiru" and id_num_col in df.columns else "N/A"
             
             rc_records = []
             total_obtained_score = 0
@@ -455,8 +474,8 @@ if df is not None:
                         box-shadow: 0 4px 20px rgba(0,0,0,0.1);
                         margin: auto;
                     }}
-                    .header-title {{ text-align: center; color: #1b5e20; font-size: 20px; font-weight: bold; }}
-                    .header-sub {{ text-align: center; color: #555; font-size: 13px; margin-bottom: 10px; }}
+                    .header-title {{ text-align: center; color: #1b5e20; font-size: 18px; font-weight: bold; }}
+                    .header-sub {{ text-align: center; color: #555; font-size: 12px; margin-bottom: 10px; }}
                     .top-section {{ display: flex; justify-content: space-between; align-items: center; background: #f1f8e9; padding: 12px; border-radius: 8px; margin-bottom: 15px; }}
                     table {{ width: 100%; border-collapse: collapse; margin-top: 10px; margin-bottom: 15px; }}
                     th, td {{ border: 1px solid #ddd; padding: 8px; text-align: left; font-size: 13px; }}
@@ -467,14 +486,14 @@ if df is not None:
             </head>
             <body>
                 <div class="report-card">
-                    <div class="header-title">🏫 TRIAD APP - WARAQAA RAGAA BARATAA</div>
-                    <div class="header-sub">Student Academic Performance Report Card</div>
+                    <div class="header-title">🏫 {school_name_input}</div>
+                    <div class="header-sub">Waraqaa Ragaa Barataa (Student Academic Performance Report Card)</div>
                     <hr style="border: 0.5px solid #1b5e20;">
                     <div class="top-section">
                         <div>
                             <b>Maqaa Barataa:</b> {rc_name} <br>
-                            <b>Saala:</b> {rc_gender} <br>
-                            <b>Bara Barumsaa:</b> 2026 E.C.
+                            <b>Saala:</b> {rc_gender} | <b>Lakk. ID:</b> {rc_id_num} <br>
+                            <b>Kutaa:</b> {rc_grade} | <b>Daree:</b> {rc_section}
                         </div>
                         <div>{photo_html}</div>
                     </div>
@@ -490,7 +509,7 @@ if df is not None:
             </html>
             """
             
-            st.components.v1.html(report_card_html, height=500)
+            st.components.v1.html(report_card_html, height=520)
             
             rc_col1, rc_col2 = st.columns(2)
             with rc_col1:
