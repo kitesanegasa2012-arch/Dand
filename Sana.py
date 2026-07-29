@@ -27,38 +27,44 @@ st.sidebar.info("Designed & Developed by **KN (Kitesa Negasa)**")
 st.sidebar.markdown("---")
 st.sidebar.subheader("👤 Suura Kalaqaa")
 
+# Suuraa 'qixxeessaa.jpg' jedhu foldera keessaa barbaadee fiduuf
 profile_pic_path = "qixxeessaa.jpg"
 if os.path.exists(profile_pic_path):
     st.sidebar.image(profile_pic_path, caption="Qixxeessaa Nagaasaa (KN)", use_container_width=True)
 else:
     st.sidebar.warning("Suuraan 'qixxeessaa.jpg' jedhu hin argamne. Maaloo foldera koodii kana wajjin jiru keessa kaa'i.")
 
+# Seensa Dhuunfaa Kee
 st.sidebar.markdown("### 📝 Seensa  (Introduction)")
 st.sidebar.write(
     "Baga Nagaan Gara  TRIAD appilikeeshiniikootti nagaan Dhuftan! Ani barsiisaa Qixxeessaa Nagaasaa Jedhama.Mogaasni maqaa appikoo TRIAD jedhu Afaan Ingiliffaan (Tracking Rates in Academic Development)itti hiikama, "
     "Kunis,Baratoota Dandeetti Sadiin Suuta baratoo,Giddugaleeyyii fi ciccimoo jennee Qabxii isaani gosa barnootan battalleen ykn qormaata giddugaleessaan ykn semisteeran adda baasnee deggeruuf kan tajaajiludha.Appiinkun Kutaalee Gurguddoo kudhan(10) kan of keessaa qabuu fi manneen barnotaa sadarkaa 1ffaa(1-6),sadarkaa giddugaleessaa(7-8) fi sadarkaa 2ffaa(9-12) keessatti tajaajila kennuu kan danda'udha."
 )
 
+# Kaayyoo Appii Kanaa
 st.sidebar.markdown("### 🎯 Kaayyoo Appichaa (App Objective)")
 st.sidebar.write(
-    "Kaayyoon Guddaan kalaqa appi kana daree barnootaa keessatti barattoota dandeett isaanitiin adda baasuun deggersa barbaachisaa kennuun qabxii barattoota foyyeessuuf kan kalaqamedha."
+    "Kaayyoon Guddaan kalaqa appi kana daree barnootaa keessatti barattoota dandeett isaanitiin adda baasuun deggersa barbaachisaa kennuun qabxii barattoota foyyeessuuf kan kalaqamedha, "
 )
 
+# Sidebar - Qajeelfama Itti Fayyadamaa
 st.sidebar.markdown("---")
 st.sidebar.subheader("📖 Qajeelfama Itti Fayyadamaa Appichaa")
 st.sidebar.markdown(
     """
-1. **Madda Ragaa:** Faayilii haaraa kuusaa qabxii ykn roosteera excel qopha'e galchuun fe'uu ykn ragaa kanaan dura kuufame (Saved) jiru galchuu.
+1. **Madda Ragaa:** Faayilii haaraa  kuusaa qabxii ykn roosteera excell qopha'e galchuun fe'uu ykn ragaa kanaan dura kuufame (Saved) jiru galchuu.
 2. **Kuusuu (Save):** Faayiliin fe'ame akka kuufamuuf buttoon 'Save' xuquu.
-3. **Qindaa'ina:** Column maqaa barataa, koorniyaa, semisteera, fi gosa barnootaa keessatti argamu filachuu.
-4. **Bu'aa Ilaali:** Gosa barnootaan dandeettii barattootaa (Ciccimoo, Giddu-galeeyyii, Suuta baratoo) koorniyaan xiinxalame ilaaluu!
+3. **Qindaa'ina:** Column maqaa barataa, koorniyaa, fi gosa barnootaa keessatti argamu filachuu.
+4. **Bu'aa Ilaali:** Gosa barnootaan dandeettii barattootaa (Ciccimoo, Giddu-galeeyyii, Suuta baratoo) koorniyaan xiinxalame ilaali!
 """
 )
 
+# Cache OCR reader to avoid reloading
 @st.cache_resource
 def load_ocr_reader():
     return easyocr.Reader(['en'])
 
+# Sidebar - Madda Ragaa Filachuu (Upload vs Saved)
 st.sidebar.markdown("---")
 st.sidebar.subheader("🗄️ Madda Ragaa Filadhu")
 madda_ragaa = st.sidebar.radio(
@@ -70,6 +76,9 @@ df = None
 file_extension = ""
 image_to_process = None
 
+# ==========================================
+# FILANNOO 1: RAGAA HAARAA FE'UU
+# ==========================================
 if madda_ragaa == "📤 Ragaa Haaraa Fe'uu (Upload)":
     st.subheader("📂 Step 1: Faayila (Excel/CSV) ykn Suuraa (Image) Fe'i")
     uploaded_file = st.file_uploader(
@@ -80,11 +89,12 @@ if madda_ragaa == "📤 Ragaa Haaraa Fe'uu (Upload)":
     if uploaded_file is not None:
         file_extension = uploaded_file.name.split('.')[-1].lower()
         
+        # Save Button (Kuusuuf)
         if st.button("💾 Faayilii Kana Kuusi (Save File)"):
             file_path = os.path.join(SAVE_DIR, uploaded_file.name)
             with open(file_path, "wb") as f:
                 f.write(uploaded_file.getbuffer())
-            st.success(f"Faayiliin '{uploaded_file.name}' milkaa'inaan kuufameera!")
+            st.success(f"Faayiliin '{uploaded_file.name}' milkaa'inaan kuufameera! Gara 'Ragaa Kuufame' tti deemtee argachuu dandeessa.")
 
         if file_extension == 'csv':
             df = pd.read_csv(uploaded_file)
@@ -92,41 +102,55 @@ if madda_ragaa == "📤 Ragaa Haaraa Fe'uu (Upload)":
         elif file_extension == 'xlsx':
             xls = pd.ExcelFile(uploaded_file)
             sheet_name = st.selectbox("Sheet Excel filadhu:", xls.sheet_names)
-            skip = st.number_input("Sarara irraa kaafamu (Header Row Index):", min_value=0, max_value=10, value=0)
+            skip = st.number_input(
+                "Sarara irraa kaafamu (Header Row Index):",
+                min_value=0, max_value=10, value=0
+            )
             df = pd.read_excel(uploaded_file, sheet_name=sheet_name, skiprows=skip)
             st.success("Faayiliin Excel milkaa'inaan fe'ameera!")
         elif file_extension in ['png', 'jpg', 'jpeg']:
             image_to_process = Image.open(uploaded_file)
             st.image(image_to_process, caption="Suuraa Fe’ame", use_container_width=True)
 
+# ==========================================
+# FILANNOO 2: RAGAA KUUFAME BANA
+# ==========================================
 else:
     st.subheader("📁 Faayiloota Kuufaman (Saved Files)")
     saved_files = os.listdir(SAVE_DIR)
     
     if not saved_files:
-        st.info("Kuusaa keessa ragaan tokkoyyuu hin jiru.")
+        st.info("Kuusaa keessa ragaan tokkoyyuu hin jiru. Maaloo jalqaba ragaa haaraa fe'uun 'Save' godhi.")
     else:
         selected_file = st.selectbox("Faayilii barbaaddu filadhu:", saved_files)
         file_path = os.path.join(SAVE_DIR, selected_file)
         file_extension = selected_file.split('.')[-1].lower()
 
+        # Delete Button (Haquuf)
         if st.button("🗑️ Faayilii Kana Haqi (Delete)"):
             os.remove(file_path)
             st.success(f"Faayiliin '{selected_file}' haqameera!")
             st.rerun()
 
+        # Daataa Dubbisuu
         if os.path.exists(file_path):
             if file_extension == 'csv':
                 df = pd.read_csv(file_path)
             elif file_extension == 'xlsx':
                 xls = pd.ExcelFile(file_path)
                 sheet_name = st.selectbox("Sheet Excel filadhu:", xls.sheet_names)
-                skip = st.number_input("Sarara irraa kaafamu (Header Row Index):", min_value=0, max_value=10, value=0)
+                skip = st.number_input(
+                    "Sarara irraa kaafamu (Header Row Index):",
+                    min_value=0, max_value=10, value=0
+                )
                 df = pd.read_excel(file_path, sheet_name=sheet_name, skiprows=skip)
             elif file_extension in ['png', 'jpg', 'jpeg']:
                 image_to_process = Image.open(file_path)
                 st.image(image_to_process, caption="Suuraa Kuufame", use_container_width=True)
 
+# ==========================================
+# SUURAA (IMAGE) IRRAA DUBBISUU (OCR)
+# ==========================================
 if image_to_process is not None:
     st.info("Suuraa irraa barreeffama dubbisuu (OCR) eegalaara... Maaloo xiqqoo turi!")
     with st.spinner("Suuraa irraa daataa baasaa jira..."):
@@ -134,383 +158,426 @@ if image_to_process is not None:
         reader = load_ocr_reader()
         results = reader.readtext(image_np)
         extracted_texts = [res[1] for res in results]
+
         if extracted_texts:
             st.success("Daataan suuraa irraa milkaa'inaan dubbifameera!")
             st.write("**Barreeffama Suuraa keessaa argame:**", extracted_texts)
+        else:
+            st.error("Suuraa kana irraa barreeffama argachuu hin danda’amne.")
 
+# ==========================================
+# GAMAAGGAMA FI QOODINSA QABXII (EXCEL/CSV)
+# ==========================================
 if df is not None:
-    df = df.dropna(how='all')
-    df.columns = [str(c).strip() for c in df.columns]
-
+    # Step 2 & 3: Qindaa'ina kolomanii
     st.subheader("⚙️ Step 2 & 3: Qindaa'ina Kolomanii fi Daataa Waliigalaa")
     all_columns = df.columns.tolist()
 
     col_a, col_b, col_c = st.columns(3)
     with col_a:
-        name_col = st.selectbox("Kolomanii Maqaa Barataa:", all_columns, index=1 if len(all_columns) > 1 else 0)
+        name_col = st.selectbox("Kolomanii Maqaa Barataa qabatee jiru:", all_columns, index=0)
     with col_b:
-        gender_col = st.selectbox("Kolonii Saala (Gender):", all_columns, index=2 if len(all_columns) > 2 else 0)
+        gender_col = st.selectbox(
+            "Kolonii Saala (Gender) - [Fkn: Dhi/Dha ykn M/F]:",
+            all_columns,
+            index=1 if len(all_columns) > 1 else 0,
+        )
     with col_c:
-        term_col = st.selectbox("Kolonii Semisteera/Term (1st, 2nd, Av):", all_columns, index=4 if len(all_columns) > 4 else 0)
+        subject_cols = st.multiselect(
+            "Kolomanii  Gosa Barnootaa qabatee jiru:",
+            [col for col in all_columns if col not in [name_col, gender_col]],
+        )
 
-    # Maqaa barataa sararoota gadii (None ta'an) guutuuf ffill fayyadamuu
-    df[name_col] = df[name_col].ffill()
-
+    # 📊 Mul'stuu Ragaa fe'ame( Preview) fi Baay'ina Barattoota Waliigalaa (Summary Metrics)
     st.markdown("---")
     st.subheader("👀 Daataa Jalqabaa fi Baay'ina Barattoota Waliigalaa")
     
-    student_list = [str(x) for x in df[name_col].dropna().unique().tolist() if str(x).strip() != "" and str(x).lower() != "nan"]
-    
+    # Herrega Baay'ina Dhiiraa fi Dhalaaa waliigalaa (Galmaa'an hunda)
     dhiira_total = len(df[df[gender_col].astype(str).str.contains("Dhi|M", case=False)])
     dhalaa_total = len(df[df[gender_col].astype(str).str.contains("Dha|F", case=False)])
-    total_students = len(student_list)
+    total_students = dhiira_total + dhalaa_total
 
+    # Metric Cards agarsiisuuf (Waliigala)
     m_col1, m_col2, m_col3 = st.columns(3)
-    m_col1.metric("👥 Waliigala Barattoota", f"{total_students}")
+    m_col1.metric("👥 Waliigala Galmaa'an", f"{total_students}")
     m_col2.metric("👦 Dhiira", f"{dhiira_total}")
     m_col3.metric("👧 Dhalaa", f"{dhalaa_total}")
 
-    st.dataframe(df.head(10), use_container_width=True)
+    st.dataframe(df.head(), use_container_width=True)
 
-    if name_col and gender_col and term_col and student_list:
-        
-        # ==========================================
-        # 1. WARAQAA EENYUMMAA BARATAA (STUDENT ID CARD)
-        # ==========================================
+    # Quiz Qabxii Gara 100tti jijjiiruu (Scaling option)
+    st.markdown("---")
+    use_scaling = st.checkbox("xiinxala battallen (Fkn: 10 ykn 20) gara 100tti jijjiiruu (Scale to 100%)")
+    max_score_input = 100
+    if use_scaling:
+        max_score_input = st.number_input(
+            "Qabxii Waliigalaa (Maximum Possible Score, fkn: 10, 20, 50):",
+            min_value=1,
+            value=10,
+        )
+
+    if subject_cols and name_col and gender_col:
         st.markdown("---")
-        st.subheader("🪪 Kaardii Eenyummaa Barataa Qopheessuu (Student ID Card)")
-        
-        selected_id_student = st.selectbox("Barataa Kaardii Eenyummaaf barbaaddu filadhu:", student_list, key="id_card_select")
-        
-        if selected_id_student:
-            id_sub = df[df[name_col].astype(str) == selected_id_student]
-            if not id_sub.empty:
-                id_s_row = id_sub.iloc[0]
-                id_s_name = id_s_row[name_col]
-                id_s_gender = id_s_row[gender_col]
-                
-                card_html = f"""
-                <!DOCTYPE html>
+        st.subheader("🔍 Step 4: Barbaacha Ragaa barataa Dhuunfaa(search)")
+
+        # Search Bar
+        search_query = st.text_input("🔍 Maqaa Barataa Barbaadi (Barbaachaaf asitti barreessi):")
+
+        filtered_main_df = df.copy()
+        if search_query:
+            filtered_main_df = filtered_main_df[
+                filtered_main_df[name_col].astype(str).str.contains(search_query, case=False, na=False)
+            ]
+            st.info(f"Bu'aa barbaacha barataa: '{search_query}'")
+            st.dataframe(filtered_main_df, use_container_width=True, hide_index=True)
+            st.markdown("---")
+
+        # Gosa barnootaan qooduu fi koorniyaan ibsuu
+        for subj in subject_cols:
+            st.markdown(f"### 📖 Gosa Barnootaa: **{subj}**")
+
+            scores = pd.to_numeric(df[subj], errors="coerce")
+
+            if use_scaling and max_score_input > 0:
+                scores = (scores / max_score_input) * 100
+
+            temp_df = df.copy()
+            temp_df["Calculated_Score"] = scores
+
+            ciccimoo = temp_df[temp_df["Calculated_Score"] >= 80]
+            giddu = temp_df[
+                (temp_df["Calculated_Score"] >= 50) & (temp_df["Calculated_Score"] < 80)
+            ]
+            suuta = temp_df[
+                (temp_df["Calculated_Score"] < 50) & (temp_df["Calculated_Score"].notna())
+            ]
+            
+            qoraman_df = pd.concat([ciccimoo, giddu, suuta])
+            none_df = temp_df[temp_df["Calculated_Score"].isna()]
+
+            dhiira_qoraman = len(qoraman_df[qoraman_df[gender_col].astype(str).str.contains("Dhi|M", case=False)])
+            dhalaa_qoraman = len(qoraman_df[qoraman_df[gender_col].astype(str).str.contains("Dha|F", case=False)])
+            waliigala_qoraman = dhiira_qoraman + dhalaa_qoraman
+
+            dhiira_none = len(none_df[none_df[gender_col].astype(str).str.contains("Dhi|M", case=False)])
+            dhalaa_none = len(none_df[none_df[gender_col].astype(str).str.contains("Dha|F", case=False)])
+            waliigala_none = dhiira_none + dhalaa_none
+
+            st.info(f"📊 **Xiinxala Gosa Barnootaa Kanaa ({subj}):**\n"
+                    f"- **Waliigala Barattoota Qoraman:** {waliigala_qoraman} (👦 Dhiira: {dhiira_qoraman} | 👧 Dhalaa: {dhalaa_qoraman})\n"
+                    f"- **Barattoota Qabxii Hin Qabne (None/Absent):** {waliigala_none} (👦 Dhiira: {dhiira_none} | 👧 Dhalaa: {dhalaa_none})\n"
+                    f"- **Waliigala Galmaa'an (Qoraman + None):** {waliigala_qoraman + waliigala_none}")
+
+            display_cols = list(dict.fromkeys([name_col, gender_col, subj]))
+
+            col1, col2, col3 = st.columns(3)
+
+            with col1:
+                st.metric(label="🌟 Ciccimoo (≥ 80%)", value=f"{len(ciccimoo)} Barattoota")
+                if not ciccimoo.empty:
+                    dhiira_c = len(ciccimoo[ciccimoo[gender_col].astype(str).str.contains("Dhi|M", case=False)])
+                    dhalaa_c = len(ciccimoo[ciccimoo[gender_col].astype(str).str.contains("Dha|F", case=False)])
+                    st.caption(f"👥 Dhiira: {dhiira_c} | Dhalaa: {dhalaa_c}")
+                    st.dataframe(ciccimoo[display_cols], use_container_width=True, hide_index=True)
+
+            with col2:
+                st.metric(label="📊 Giddu-galeeyyii (50-79.9%)", value=f"{len(giddu)} Barattoota")
+                if not giddu.empty:
+                    dhiira_g = len(giddu[giddu[gender_col].astype(str).str.contains("Dhi|M", case=False)])
+                    dhalaa_g = len(giddu[giddu[gender_col].astype(str).str.contains("Dha|F", case=False)])
+                    st.caption(f"👥 Dhiira: {dhiira_g} | Dhalaa: {dhalaa_g}")
+                    st.dataframe(giddu[display_cols], use_container_width=True, hide_index=True)
+
+            with col3:
+                st.metric(label="⚠️ Suuta Barattoota (< 50%)", value=f"{len(suuta)} Barattoota")
+                if not suuta.empty:
+                    dhiira_s = len(suuta[suuta[gender_col].astype(str).str.contains("Dhi|M", case=False)])
+                    dhalaa_s = len(suuta[suuta[gender_col].astype(str).str.contains("Dha|F", case=False)])
+                    st.caption(f"👥 Dhiira: {dhiira_s} | Dhalaa: {dhalaa_s}")
+                    st.dataframe(suuta[display_cols], use_container_width=True, hide_index=True)
+
+            st.markdown(f"### 🖨️ Barattoota Gosa Barnootaa **{subj}** Maxansiisuuf (Print)")
+            
+            print_category = st.selectbox(
+                f"Gita dandeettii isaanii filadhu ({subj}):",
+                ["Ciccimoo (≥ 80%)", "Giddu-galeeyyii (50-79.9%)", "Suuta Barattoota (< 50%)", "Waliigala Qoraman Hunda"],
+                key=f"print_select_{subj}"
+            )
+
+            if print_category == "Ciccimoo (≥ 80%)":
+                export_df = ciccimoo[display_cols]
+                title_text = f"Barattoota Ciccimoo Gosa Barnootaa {subj}"
+            elif print_category == "Giddu-galeeyyii (50-79.9%)":
+                export_df = giddu[display_cols]
+                title_text = f"Barattoota Giddu-galeeyyii Gosa Barnootaa {subj}"
+            elif print_category == "Suuta Barattoota (< 50%)":
+                export_df = suuta[display_cols]
+                title_text = f"Suuta Barattoota Gosa Barnootaa {subj}"
+            else:
+                export_df = qoraman_df[display_cols]
+                title_text = f"Barattoota Qoraman Hunda Gosa Barnootaa {subj}"
+
+            if not export_df.empty:
+                csv_data = export_df.to_csv(index=False).encode('utf-8')
+                st.download_button(
+                    label=f"📥 Faayilii {print_category} Buusuu (Download CSV)",
+                    data=csv_data,
+                    file_name=f"{subj}_{print_category.split()[0]}_barattoota.csv",
+                    mime="text/csv",
+                    key=f"download_{subj}"
+                )
+
+                html_table = export_df.to_html(classes='table table-striped', index=False)
+                print_html = f"""
                 <html>
                 <head>
+                    <title>{title_text}</title>
                     <style>
-                        .card {{
-                            width: 350px;
-                            border: 2px solid #2e7d32;
-                            border-radius: 12px;
-                            padding: 20px;
-                            font-family: Arial, sans-serif;
-                            background: #ffffff;
-                            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-                            text-align: center;
-                            margin: auto;
-                        }}
-                        .school-title {{
-                            font-size: 18px;
-                            font-weight: bold;
-                            color: #1b5e20;
-                        }}
-                        .card-header {{
-                            font-size: 13px;
-                            color: #555;
-                            margin-bottom: 10px;
-                        }}
-                        .student-info {{
-                            text-align: left;
-                            font-size: 15px;
-                            margin: 10px 0;
-                            padding: 5px;
-                            background: #f1f8e9;
-                            border-radius: 4px;
-                        }}
-                        .footer {{
-                            margin-top: 15px;
-                            font-size: 11px;
-                            color: #777;
-                            border-top: 1px solid #ddd;
-                            padding-top: 8px;
-                        }}
+                        body {{ font-family: Arial, sans-serif; margin: 20px; }}
+                        h2 {{ text-align: center; color: #333; }}
+                        table {{ width: 100%; border-collapse: collapse; margin-top: 20px; }}
+                        th, td {{ border: 1px solid #ddd; padding: 8px; text-align: left; }}
+                        th {{ background-color: #f2f2f2; }}
                     </style>
                 </head>
                 <body>
-                    <div class="card">
-                        <div class="school-title">🏫 TRIAD APP SCHOOL</div>
-                        <div class="card-header">Kaardii Eenyummaa Barataa (Student ID Card)</div>
-                        <hr>
-                        <div class="student-info"><b>Maqaa:</b> {id_s_name}</div>
-                        <div class="student-info"><b>Saala:</b> {id_s_gender}</div>
-                        <div class="student-info"><b>Daree:</b> Barataa/tuu Qormaataa</div>
-                        <div class="footer">Designed & Developed by Kitesa Negasa</div>
-                    </div>
+                    <h2>🏫 TRIAD APP - {title_text}</h2>
+                    {html_table}
+                    <script>
+                        window.onload = function() {{ window.print(); }}
+                    </script>
                 </body>
                 </html>
                 """
-                st.components.v1.html(card_html, height=260)
-                st.download_button(
-                    label=f"📥 Kaardii {id_s_name} Buusuu (Download ID Card HTML)",
-                    data=card_html.encode('utf-8'),
-                    file_name=f"Kaardii_Eenyummaa_{id_s_name}.html",
-                    mime="text/html",
-                    key="download_id_btn"
-                )
-
-        # ==========================================
-        # 2. WARAQAA RAGAA BARATAA (REPORT CARD)
-        # ==========================================
-        st.markdown("---")
-        st.subheader("📋 Waraqaa Ragaa Barataa Guutuu (Report Card - Sem 1 & Sem 2)")
-        
-        school_name_input = st.text_input("Maqaa Mana Barumsaa (School Name):", value="Mane Barumsaa Sadarkaa 1ffaa & 2ffaa TRIAD")
-        selected_rep_student = st.selectbox("Barataa Waraqaa Ragaa (Report Card) isaaf qopheessuuf barbaaddu filadhu:", student_list, key="report_select")
-        
-        st.markdown("### ⚙️ Qindaa'ina Gosa Barnootaa")
-        num_subjects = st.number_input("Baay'ina Gosa Barnootaa (Number of Subjects):", min_value=1, max_value=15, value=5, step=1)
-        
-        subject_cols = []
-        for i in range(int(num_subjects)):
-            cols = st.columns(2)
-            with cols[0]:
-                s_name_input = st.text_input(f"Maqaa Gosa Barnootaa {i+1}:", value=f"Barnoota {i+1}", key=f"subj_name_{i}")
-            with cols[1]:
-                subj_col = st.selectbox(f"Kolonii Gosa Barnootaa ({s_name_input}):", all_columns, key=f"subj_col_{i}")
-            subject_cols.append({"subject": s_name_input, "column": subj_col})
-
-        if selected_rep_student:
-            student_df = df[df[name_col].astype(str) == selected_rep_student]
-            
-            # Sem 1 fi Sem 2 term_col irratti hundaa'uudhaan adda baasuu
-            sem1_rows = student_df[student_df[term_col].astype(str).str.contains("1|first|1st", case=False, na=False)]
-            sem2_rows = student_df[student_df[term_col].astype(str).str.contains("2|second|2nd", case=False, na=False)]
-            
-            s_row_sem1 = sem1_rows.iloc[0] if not sem1_rows.empty else (student_df.iloc[0] if len(student_df) > 0 else None)
-            s_row_sem2 = sem2_rows.iloc[0] if not sem2_rows.empty else (student_df.iloc[1] if len(student_df) > 1 else s_row_sem1)
-            
-            if s_row_sem1 is not None:
-                s_name = s_row_sem1[name_col]
-                s_gender = s_row_sem1[gender_col]
                 
-                col_rc1, col_rc2 = st.columns(2)
-                with col_rc1:
-                    student_conduct = st.selectbox("Amala Barataa (Conduct):", ["Baayyee Gaarii (Very Good)", "Gaarii (Good)", "Giddu-galeessa (Satisfactory)", "Fooyya'uu qaba (Needs Improvement)"])
-                with col_rc2:
-                    days_absent = st.number_input("Guyyaa Haftee (Days Absent):", min_value=0, value=0)
+                st.components.v1.html(
+                    f"""
+                    <script>
+                    function printContent() {{
+                        var myWindow = window.open('', '', 'height=600,width=800');
+                        myWindow.document.write(`{print_html}`);
+                        myWindow.document.close();
+                        myWindow.focus();
+                    }}
+                    </script>
+                    <button onclick="printContent()" style="background-color: #4CAF50; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; font-size: 16px;">
+                        🖨️ Kallattiin Print Godhuu (Direct Print)
+                    </button>
+                    """,
+                    height=50
+                )
+            else:
+                st.warning(f"Ragaan ramaddii kanaaf argame hin jiru.")
 
-                subjects_html = ""
-                sem1_totals = []
-                sem2_totals = []
-                annual_averages = []
+            st.markdown("---")
 
-                for item in subject_cols:
-                    val1 = pd.to_numeric(s_row_sem1[item["column"]], errors='coerce')
-                    val2 = pd.to_numeric(s_row_sem2[item["column"]], errors='coerce') if s_row_sem2 is not None else 0.0
-                    
-                    v1_clean = val1 if not pd.isna(val1) else 0.0
-                    v2_clean = val2 if not pd.isna(val2) else 0.0
-                    
-                    avg_score = (v1_clean + v2_clean) / 2.0
-                    
-                    sem1_totals.append(v1_clean)
-                    sem2_totals.append(v2_clean)
-                    annual_averages.append(avg_score)
-                    
-                    if avg_score >= 80:
-                        remark = "Baayyee Gaarii (Very Good)"
-                    elif avg_score >= 50:
-                        remark = "Gaarii (Good)"
+    # ==========================================
+    # KAARDII BARATAA QOPHEESSUU (STUDENT ID CARD)
+    # ==========================================
+    st.markdown("---")
+    st.subheader("🪪 Kaardii Barataa Qopheessuu (Student ID Card Generator)")
+    
+    student_list = df[name_col].unique().tolist() if name_col in df.columns else []
+    if student_list:
+        selected_student = st.selectbox("Barataa Kaardii isaaf qopheessuuf barbaaddu filadhu:", student_list)
+        
+        if selected_student:
+            student_data = df[df[name_col] == selected_student].iloc[0]
+            s_name = student_data[name_col]
+            s_gender = student_data[gender_col] if gender_col in df.columns else "N/A"
+            
+            # Kaardii HTML Template
+            card_html = f"""
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <style>
+                    .card {{
+                        width: 350px;
+                        border: 2px solid #2e7d32;
+                        border-radius: 12px;
+                        padding: 20px;
+                        font-family: Arial, sans-serif;
+                        background: #ffffff;
+                        box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+                        text-align: center;
+                        margin: auto;
+                    }}
+                    .school-title {{
+                        font-size: 18px;
+                        font-weight: bold;
+                        color: #1b5e20;
+                    }}
+                    .card-header {{
+                        font-size: 13px;
+                        color: #555;
+                        margin-bottom: 10px;
+                    }}
+                    .student-info {{
+                        text-align: left;
+                        font-size: 15px;
+                        margin: 10px 0;
+                        padding: 5px;
+                        background: #f1f8e9;
+                        border-radius: 4px;
+                    }}
+                    .footer {{
+                        margin-top: 15px;
+                        font-size: 11px;
+                        color: #777;
+                        border-top: 1px solid #ddd;
+                        padding-top: 8px;
+                    }}
+                </style>
+            </head>
+            <body>
+                <div class="card">
+                    <div class="school-title">🏫 TRIAD APP SCHOOL</div>
+                    <div class="card-header">Kaardii Eenyummaa Barataa (Student ID Card)</div>
+                    <hr>
+                    <div class="student-info"><b>Maqaa:</b> {s_name}</div>
+                    <div class="student-info"><b>Saala:</b> {s_gender}</div>
+                    <div class="student-info"><b>Daree:</b> Barataa/tuu Qormaataa</div>
+                    <div class="footer">Designed & Developed by Kitesa Negasa</div>
+                </div>
+            </body>
+            </html>
+            """
+            
+            # Agarsiisuu Kaardichaa
+            st.components.v1.html(card_html, height=260)
+            
+            # Download Button for Student Card
+            st.download_button(
+                label=f"📥 Kaardii {s_name} Buusuu (Download Card HTML)",
+                data=card_html.encode('utf-8'),
+                file_name=f"Kaardii_{s_name}.html",
+                mime="text/html"
+            )
+
+    # ==========================================
+    # WARAQAA RAGAA BARATAA (REPORT CARD) QOPHEESSUU
+    # ==========================================
+    st.markdown("---")
+    st.subheader("📄 Waraqaa Ragaa Barataa Qopheessuu (Student Report Card Generator)")
+
+    if student_list and subject_cols:
+        selected_student_rc = st.selectbox("Barataa Waraqaa Ragaa (Report Card) isaaf qopheessuuf barbaaddu filadhu:", student_list, key="rc_student_select")
+        
+        if selected_student_rc:
+            rc_student_data = df[df[name_col] == selected_student_rc].iloc[0]
+            rc_name = rc_student_data[name_col]
+            rc_gender = rc_student_data[gender_col] if gender_col in df.columns else "N/A"
+            
+            rc_records = []
+            total_obtained_score = 0
+            count_subjects = 0
+            
+            for subj in subject_cols:
+                raw_val = rc_student_data[subj]
+                try:
+                    val_num = float(raw_val)
+                    if use_scaling and max_score_input > 0:
+                        scaled_val = (val_num / max_score_input) * 100
                     else:
-                        remark = "Fooyya'uu Qaba"
+                        scaled_val = val_num
+                    rc_records.append({"Gosa Barnootaa": subj, "Qabxii Argame": raw_val, "Qabxii Sirreeffame (%)": f"{scaled_val:.1f}%"})
+                    total_obtained_score += scaled_val
+                    count_subjects += 1
+                except:
+                    rc_records.append({"Gosa Barnootaa": subj, "Qabxii Argame": str(raw_val), "Qabxii Sirreeffame (%)": "N/A"})
+            
+            rc_df = pd.DataFrame(rc_records)
+            avg_score = (total_obtained_score / count_subjects) if count_subjects > 0 else 0
+            
+            if avg_score >= 80:
+                status_text = "Ciccimoo (Excellent)"
+            elif avg_score >= 50:
+                status_text = "Giddu-galeeyyii (Medium)"
+            else:
+                status_text = "Suuta Barataa (Needs Support)"
 
-                    subjects_html += f"""
-                    <tr>
-                        <td><b>{item['subject']}</b></td>
-                        <td>{v1_clean:.1f}</td>
-                        <td>{v2_clean:.1f}</td>
-                        <td><b>{avg_score:.1f}</b></td>
-                        <td>{remark}</td>
-                    </tr>
-                    """
-
-                overall_sem1_avg = sum(sem1_totals) / len(sem1_totals) if sem1_totals else 0
-                overall_sem2_avg = sum(sem2_totals) / len(sem2_totals) if sem2_totals else 0
-                overall_annual_avg = sum(annual_averages) / len(annual_averages) if annual_averages else 0
-
-                # Barattoota hundaaf avireejii herreguun sadarkaa baasuuf
-                all_student_avgs = []
-                for student in student_list:
-                    st_df = df[df[name_col].astype(str) == student]
-                    st_s1 = st_df[st_df[term_col].astype(str).str.contains("1|first|1st", case=False, na=False)]
-                    st_s2 = st_df[st_df[term_col].astype(str).str.contains("2|second|2nd", case=False, na=False)]
-                    
-                    r1 = st_s1.iloc[0] if not st_s1.empty else (st_df.iloc[0] if len(st_df) > 0 else None)
-                    r2 = st_s2.iloc[0] if not st_s2.empty else (st_df.iloc[1] if len(st_df) > 1 else r1)
-                    
-                    if r1 is not None and r2 is not None:
-                        st_avgs = []
-                        for item in subject_cols:
-                            v1 = pd.to_numeric(r1[item["column"]], errors='coerce')
-                            v2 = pd.to_numeric(r2[item["column"]], errors='coerce')
-                            v1c = v1 if not pd.isna(v1) else 0.0
-                            v2c = v2 if not pd.isna(v2) else 0.0
-                            st_avgs.append((v1c + v2c) / 2.0)
-                        mean_st_avg = sum(st_avgs) / len(st_avgs) if st_avgs else 0
-                        all_student_avgs.append({"student": student, "avg": mean_st_avg})
-
-                if all_student_avgs:
-                    rank_df = pd.DataFrame(all_student_avgs)
-                    rank_df['Rank'] = rank_df['avg'].rank(ascending=False, method='min').astype(int)
-                    matched_rank = rank_df[rank_df['student'] == selected_rep_student]['Rank']
-                    curr_rank = matched_rank.values[0] if not matched_rank.empty else 1
-                else:
-                    curr_rank = 1
-
-                report_html = f"""
-                <!DOCTYPE html>
-                <html>
-                <head>
-                    <style>
-                        body {{ font-family: Arial, sans-serif; margin: 0; padding: 10px; background: #f9f9f9; }}
-                        .report-card {{
-                            width: 100%;
-                            max-width: 700px;
-                            margin: auto;
-                            border: 3px solid #1b5e20;
-                            border-radius: 10px;
-                            padding: 20px;
-                            background: #ffffff;
-                            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-                        }}
-                        .header {{ text-align: center; color: #1b5e20; margin-bottom: 10px; }}
-                        .header h2 {{ margin: 0; font-size: 19px; }}
-                        .header h3 {{ margin: 5px 0; font-size: 15px; color: #2e7d32; }}
-                        .header p {{ margin: 2px 0; font-size: 12px; color: #555; }}
-                        .student-info {{
-                            display: flex;
-                            justify-content: space-between;
-                            background: #e8f5e9;
-                            padding: 10px;
-                            border-radius: 6px;
-                            font-size: 14px;
-                            margin-bottom: 15px;
-                        }}
-                        table {{ width: 100%; border-collapse: collapse; margin-bottom: 15px; }}
-                        th, td {{ border: 1px solid #c8e6c9; padding: 8px; text-align: center; font-size: 13px; }}
-                        th {{ background-color: #2e7d32; color: white; }}
-                        td:first-child {{ text-align: left; }}
-                        .summary-box {{
-                            background: #f1f8e9;
-                            padding: 10px;
-                            border-radius: 6px;
-                            font-size: 14px;
-                            margin-bottom: 15px;
-                        }}
-                        .footer-note {{
-                            display: flex;
-                            justify-content: space-between;
-                            font-size: 13px;
-                            margin-top: 25px;
-                            border-top: 1px dashed #aaa;
-                            padding-top: 10px;
-                        }}
-                    </style>
-                </head>
-                <body>
-                    <div class="report-card">
-                        <div class="header">
-                            <h2>🏫 {school_name_input}</h2>
-                            <h3>Waraqaa Ragaa Barataa (Student Report Card)</h3>
-                            <p>Semisteera 1ffaa & 2ffaa</p>
-                        </div>
-                        <hr style="border: 1px solid #1b5e20;">
-                        <div class="student-info">
-                            <div><b>Maqaa Barataa:</b> {s_name}</div>
-                            <div><b>Saala:</b> {s_gender}</div>
-                        </div>
-                        <table>
-                            <tr>
-                                <th>Gosa Barnootaa</th>
-                                <th>Sem 1 (1st)</th>
-                                <th>Sem 2 (2nd)</th>
-                                <th>Avireejii</th>
-                                <th>Yaada (Remark)</th>
-                            </tr>
-                            {subjects_html}
-                        </table>
-                        <div class="summary-box">
-                            <div><b>📊 Avireejii Semisteera 1ffaa:</b> {overall_sem1_avg:.2f}%</div>
-                            <div><b>📊 Avireejii Semisteera 2ffaa:</b> {overall_sem2_avg:.2f}%</div>
-                            <div><b>📈 Avireejii Waliigalaa (Annual Average):</b> {overall_annual_avg:.2f}%</div>
-                            <div><b>🏆 Sadarkaa (Rank):</b> {curr_rank} / {len(student_list)}</div>
-                            <div><b>⭐ Amala (Conduct):</b> {student_conduct}</div>
-                            <div><b>📅 Guyyaa Haftee (Days Absent):</b> {days_absent}</div>
-                        </div>
-                        <div class="footer-note">
-                            <div>Mallattoo Barsiisaa Daree: ____________</div>
-                            <div>Mallattoo Bulchiinsaa: ____________</div>
-                        </div>
+            rc_table_html = rc_df.to_html(classes='table table-striped', index=False)
+            
+            report_card_html = f"""
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <title>Report Card - {rc_name}</title>
+                <style>
+                    body {{ font-family: Arial, sans-serif; margin: 30px; background: #fafafa; }}
+                    .report-card {{
+                        width: 600px;
+                        border: 3px solid #1b5e20;
+                        border-radius: 10px;
+                        padding: 25px;
+                        background: #ffffff;
+                        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+                        margin: auto;
+                    }}
+                    .header-title {{ text-align: center; color: #1b5e20; font-size: 22px; font-weight: bold; }}
+                    .header-sub {{ text-align: center; color: #555; font-size: 14px; margin-bottom: 15px; }}
+                    .info-box {{ background: #f1f8e9; padding: 10px; border-radius: 5px; margin-bottom: 15px; font-size: 14px; }}
+                    table {{ width: 100%; border-collapse: collapse; margin-top: 15px; margin-bottom: 15px; }}
+                    th, td {{ border: 1px solid #ccc; padding: 8px; text-align: left; font-size: 14px; }}
+                    th {{ background-color: #e8f5e9; color: #1b5e20; }}
+                    .summary-box {{ font-size: 14px; font-weight: bold; margin-top: 10px; padding: 8px; background: #e8f5e9; border-radius: 5px; }}
+                    .footer-note {{ text-align: center; font-size: 11px; color: #777; margin-top: 20px; border-top: 1px solid #ddd; padding-top: 10px; }}
+                </style>
+            </head>
+            <body>
+                <div class="report-card">
+                    <div class="header-title">🏫 TRIAD APP - WARAQAA RAGAA BARATAA</div>
+                    <div class="header-sub">Student Academic Performance Report Card</div>
+                    <hr>
+                    <div class="info-box">
+                        <b>Maqaa Barataa:</b> {rc_name} <br>
+                        <b>Saala:</b> {rc_gender} <br>
+                        <b>Bara Barumsaa:</b> 2026 E.C.
                     </div>
-                </body>
-                </html>
-                """
-                
-                st.components.v1.html(report_html, height=580, scrolling=True)
-                
+                    <b>Qabxii Gosa Barnootaa:</b>
+                    {rc_table_html}
+                    <div class="summary-box">
+                        Waliigala Giddu-galeessaa (Average Score): {avg_score:.1f}% <br>
+                        Gita Dandeettii (Performance Level): {status_text}
+                    </div>
+                    <div class="footer-note">Designed & Developed by Kitesa Negasa (TRIAD Analytics App)</div>
+                </div>
+            </body>
+            </html>
+            """
+            
+            st.components.v1.html(report_card_html, height=450)
+            
+            rc_col1, rc_col2 = st.columns(2)
+            with rc_col1:
                 st.download_button(
-                    label=f"📥 Waraqaa Ragaa {s_name} Buusuu (Download Report Card HTML)",
-                    data=report_html.encode('utf-8'),
-                    file_name=f"ReportCard_{s_name}.html",
+                    label=f"📥 Waraqaa Ragaa {rc_name} Buusuu (Download HTML)",
+                    data=report_card_html.encode('utf-8'),
+                    file_name=f"ReportCard_{rc_name}.html",
                     mime="text/html",
-                    key="download_report_btn"
+                    key=f"download_rc_{rc_name}"
                 )
-
-        # ==========================================
-        # 3. QODINSA BARATTOOTA DANDEETTII SADIIN (TRIAD CLASSIFICATION)
-        # ==========================================
-        st.markdown("---")
-        st.subheader("🎯 Step 4: Qoodinsa Barattoota Dandeettii Sadiin (TRIAD Classification)")
-        
-        if 'all_student_avgs' in locals() and all_student_avgs:
-            triad_df = pd.DataFrame(all_student_avgs)
-            
-            def classify_student(avg):
-                if avg >= 75:
-                    return "Ciccimoo (High)"
-                elif avg >= 50:
-                    return "Giddu-galeessa (Medium)"
-                else:
-                    return "Suuta Baratoo (Low)"
-            
-            triad_df['Dandeettii'] = triad_df['avg'].apply(classify_student)
-            triad_df['Avireejii'] = triad_df['avg'].round(2)
-            
-            ciccimoo_list = triad_df[triad_df['Dandeettii'] == "Ciccimoo (High)"]
-            giddu_list = triad_df[triad_df['Dandeettii'] == "Giddu-galeessa (Medium)"]
-            suuta_list = triad_df[triad_df['Dandeettii'] == "Suuta Baratoo (Low)"]
-
-            t_col1, t_col2, t_col3 = st.columns(3)
-            
-            with t_col1:
-                st.markdown("### ⭐ Ciccimoo")
-                st.metric("Baay'ina", len(ciccimoo_list))
-                if not ciccimoo_list.empty:
-                    st.dataframe(ciccimoo_list[['student', 'Avireejii']], use_container_width=True)
-                else:
-                    st.info("Barataan hin jiru.")
-
-            with t_col2:
-                st.markdown("### 📊 Giddu-galeessa")
-                st.metric("Baay'ina", len(giddu_list))
-                if not giddu_list.empty:
-                    st.dataframe(giddu_list[['student', 'Avireejii']], use_container_width=True)
-                else:
-                    st.info("Barataan hin jiru.")
-
-            with t_col3:
-                st.markdown("### 📉 Suuta Baratoo")
-                st.metric("Baay'ina", len(suuta_list))
-                if not suuta_list.empty:
-                    st.dataframe(suuta_list[['student', 'Avireejii']], use_container_width=True)
-                else:
-                    st.info("Barataan hin jiru.")
+            with rc_col2:
+                st.components.v1.html(
+                    f"""
+                    <script>
+                    function printReportCard() {{
+                        var myWindow = window.open('', '', 'height=700,width=800');
+                        myWindow.document.write(`{report_card_html}`);
+                        myWindow.document.close();
+                        myWindow.focus();
+                        setTimeout(function() {{ myWindow.print(); }}, 500);
+                    }}
+                    </script>
+                    <button onclick="printReportCard()" style="background-color: #1b5e20; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; font-size: 15px; width: 100%;">
+                        🖨️ Kallattiin Print Godhuu (Print Report Card)
+                    </button>
+                    """,
+                    height=50
+                )
+else:
+    st.info("Maaloo jalqabaaf faayilii kee (Excel, CSV) ykn Suuraa (PNG/JPG) fe'i, ykn ragaa kanaan dura kuufame filadhu.")
 
 # Footer
 st.markdown("---")
