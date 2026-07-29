@@ -55,7 +55,7 @@ st.sidebar.markdown(
 1. **Madda Ragaa:** Faayilii haaraa  kuusaa qabxii ykn roosteera excell qopha'e galchuun fe'uu ykn ragaa kanaan dura kuufame (Saved) jiru galchuu.
 2. **Kuusuu (Save):** Faayiliin fe'ame akka kuufamuuf buttoon 'Save' xuquu.
 3. **Qindaa'ina:** Column maqaa barataa, koorniyaa, fi gosa barnootaa keessatti argamu filachuu.
-4. **Bu'aa Ilaali:** Gosa barnootaan dandeettii barattootaa (Ciccimoo, Giddu-galeeyyii, Suuta baratoo) koorniyaan xiinxalame ilaali!
+4. **Bu'aa Ilaali:** Gosa barnootaan dandeettii barattootaa (Ciccimoo, Giddu-galeeyyii, Suuta baratoo) koorniyaan xiinxalame ilaaluu!
 """
 )
 
@@ -454,128 +454,6 @@ if df is not None:
                 file_name=f"Kaardii_{s_name}.html",
                 mime="text/html"
             )
-
-    # ==========================================
-    # WARAQAA RAGAA BARATAA (REPORT CARD) QOPHEESSUU
-    # ==========================================
-    st.markdown("---")
-    st.subheader("📄 Waraqaa Ragaa Barataa Qopheessuu (Student Report Card Generator)")
-
-    if student_list and subject_cols:
-        selected_student_rc = st.selectbox("Barataa Waraqaa Ragaa (Report Card) isaaf qopheessuuf barbaaddu filadhu:", student_list, key="rc_student_select")
-        
-        if selected_student_rc:
-            rc_student_data = df[df[name_col] == selected_student_rc].iloc[0]
-            rc_name = rc_student_data[name_col]
-            rc_gender = rc_student_data[gender_col] if gender_col in df.columns else "N/A"
-            
-            rc_records = []
-            total_obtained_score = 0
-            count_subjects = 0
-            
-            for subj in subject_cols:
-                raw_val = rc_student_data[subj]
-                try:
-                    val_num = float(raw_val)
-                    if use_scaling and max_score_input > 0:
-                        scaled_val = (val_num / max_score_input) * 100
-                    else:
-                        scaled_val = val_num
-                    rc_records.append({"Gosa Barnootaa": subj, "Qabxii Argame": raw_val, "Qabxii Sirreeffame (%)": f"{scaled_val:.1f}%"})
-                    total_obtained_score += scaled_val
-                    count_subjects += 1
-                except:
-                    rc_records.append({"Gosa Barnootaa": subj, "Qabxii Argame": str(raw_val), "Qabxii Sirreeffame (%)": "N/A"})
-            
-            rc_df = pd.DataFrame(rc_records)
-            avg_score = (total_obtained_score / count_subjects) if count_subjects > 0 else 0
-            
-            if avg_score >= 80:
-                status_text = "Ciccimoo (Excellent)"
-            elif avg_score >= 50:
-                status_text = "Giddu-galeeyyii (Medium)"
-            else:
-                status_text = "Suuta Barataa (Needs Support)"
-
-            rc_table_html = rc_df.to_html(classes='table table-striped', index=False)
-            
-            report_card_html = f"""
-            <!DOCTYPE html>
-            <html>
-            <head>
-                <title>Report Card - {rc_name}</title>
-                <style>
-                    body {{ font-family: Arial, sans-serif; margin: 30px; background: #fafafa; }}
-                    .report-card {{
-                        width: 600px;
-                        border: 3px solid #1b5e20;
-                        border-radius: 10px;
-                        padding: 25px;
-                        background: #ffffff;
-                        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-                        margin: auto;
-                    }}
-                    .header-title {{ text-align: center; color: #1b5e20; font-size: 22px; font-weight: bold; }}
-                    .header-sub {{ text-align: center; color: #555; font-size: 14px; margin-bottom: 15px; }}
-                    .info-box {{ background: #f1f8e9; padding: 10px; border-radius: 5px; margin-bottom: 15px; font-size: 14px; }}
-                    table {{ width: 100%; border-collapse: collapse; margin-top: 15px; margin-bottom: 15px; }}
-                    th, td {{ border: 1px solid #ccc; padding: 8px; text-align: left; font-size: 14px; }}
-                    th {{ background-color: #e8f5e9; color: #1b5e20; }}
-                    .summary-box {{ font-size: 14px; font-weight: bold; margin-top: 10px; padding: 8px; background: #e8f5e9; border-radius: 5px; }}
-                    .footer-note {{ text-align: center; font-size: 11px; color: #777; margin-top: 20px; border-top: 1px solid #ddd; padding-top: 10px; }}
-                </style>
-            </head>
-            <body>
-                <div class="report-card">
-                    <div class="header-title">🏫 TRIAD APP - WARAQAA RAGAA BARATAA</div>
-                    <div class="header-sub">Student Academic Performance Report Card</div>
-                    <hr>
-                    <div class="info-box">
-                        <b>Maqaa Barataa:</b> {rc_name} <br>
-                        <b>Saala:</b> {rc_gender} <br>
-                        <b>Bara Barumsaa:</b> 2026 E.C.
-                    </div>
-                    <b>Qabxii Gosa Barnootaa:</b>
-                    {rc_table_html}
-                    <div class="summary-box">
-                        Waliigala Giddu-galeessaa (Average Score): {avg_score:.1f}% <br>
-                        Gita Dandeettii (Performance Level): {status_text}
-                    </div>
-                    <div class="footer-note">Designed & Developed by Kitesa Negasa (TRIAD Analytics App)</div>
-                </div>
-            </body>
-            </html>
-            """
-            
-            st.components.v1.html(report_card_html, height=450)
-            
-            rc_col1, rc_col2 = st.columns(2)
-            with rc_col1:
-                st.download_button(
-                    label=f"📥 Waraqaa Ragaa {rc_name} Buusuu (Download HTML)",
-                    data=report_card_html.encode('utf-8'),
-                    file_name=f"ReportCard_{rc_name}.html",
-                    mime="text/html",
-                    key=f"download_rc_{rc_name}"
-                )
-            with rc_col2:
-                st.components.v1.html(
-                    f"""
-                    <script>
-                    function printReportCard() {{
-                        var myWindow = window.open('', '', 'height=700,width=800');
-                        myWindow.document.write(`{report_card_html}`);
-                        myWindow.document.close();
-                        myWindow.focus();
-                        setTimeout(function() {{ myWindow.print(); }}, 500);
-                    }}
-                    </script>
-                    <button onclick="printReportCard()" style="background-color: #1b5e20; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; font-size: 15px; width: 100%;">
-                        🖨️ Kallattiin Print Godhuu (Print Report Card)
-                    </button>
-                    """,
-                    height=50
-                )
 else:
     st.info("Maaloo jalqabaaf faayilii kee (Excel, CSV) ykn Suuraa (PNG/JPG) fe'i, ykn ragaa kanaan dura kuufame filadhu.")
 
