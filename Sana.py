@@ -45,9 +45,7 @@ st.sidebar.write(
 st.sidebar.markdown("### 🎯 Kaayyoo Appichaa (App Objective)")
 st.sidebar.write(
     "Kaayyoon Guddaan kalaqa appi kana daree barnootaa keessatti barattoota dandeett isaanitiin adda baasuun deggersa barbaachisaa kennuun qabxii barattoota foyyeessuuf kan kalaqamedha, "
-   
 )
-# ==========================================
 
 # Sidebar - Qajeelfama Itti Fayyadamaa
 st.sidebar.markdown("---")
@@ -255,7 +253,7 @@ if df is not None:
             ]
             
             # Barattoota qoraman (Ciccimoo + Giddu-galeeyyii + Suuta barattoota)
-            qoraman_df = pd.concat([ciccimoo, giddu galeeyyii,suuta barattoota])
+            qoraman_df = pd.concat([ciccimoo, giddu, suuta])
             
             # Barattoota qabxii hin qabne (None / Absent / Missing)
             none_df = temp_df[temp_df["Calculated_Score"].isna()]
@@ -303,6 +301,86 @@ if df is not None:
                     dhalaa_s = len(suuta[suuta[gender_col].astype(str).str.contains("Dha|F", case=False)])
                     st.caption(f"👥 Dhiira: {dhiira_s} | Dhalaa: {dhalaa_s}")
                     st.dataframe(suuta[display_cols], use_container_width=True, hide_index=True)
+
+            # ==========================================
+            # KALLATTIIN PRINT GODHUUF (PRINT / EXPORT FEATURE)
+            # ==========================================
+            st.markdown(f"### 🖨️ Barattoota Gosa Barnootaa **{subj}** Maxansiisuuf (Print)")
+            
+            print_category = st.selectbox(
+                f"Gita dandeettii isaanii filadhu ({subj}):",
+                ["Ciccimoo (≥ 80%)", "Giddu-galeeyyii (50-79.9%)", "Suuta Barattoota (< 50%)", "Waliigala Qoraman Hunda"],
+                key=f"print_select_{subj}"
+            )
+
+            # Akkaataa filannootti DataFrame qopheessuu
+            if print_category == "Ciccimoo (≥ 80%)":
+                export_df = ciccimoo[display_cols]
+                title_text = f"Barattoota Ciccimoo Gosa Barnootaa {subj}"
+            elif print_category == "Giddu-galeeyyii (50-79.9%)":
+                export_df = giddu[display_cols]
+                title_text = f"Barattoota Giddu-galeeyyii Gosa Barnootaa {subj}"
+            elif print_category == "Suuta Barattoota (< 50%)":
+                export_df = suuta[display_cols]
+                title_text = f"Suuta Barattoota Gosa Barnootaa {subj}"
+            else:
+                export_df = qoraman_df[display_cols]
+                title_text = f"Barattoota Qoraman Hunda Gosa Barnootaa {subj}"
+
+            # CSV file godhanii buusuun akkasumas Button Print Browser fayyadamuun ni danda'ama
+            if not export_df.empty:
+                csv_data = export_df.to_csv(index=False).encode('utf-8')
+                st.download_button(
+                    label=f"📥 Faayilii {print_category} Buusuu (Download CSV)",
+                    data=csv_data,
+                    file_name=f"{subj}_{print_category.split()[0]}_barattoota.csv",
+                    mime="text/csv",
+                    key=f"download_{subj}"
+                )
+
+                # HTML fi JavaScript fayyadamuun kallattiin Browser irraa Print akka godhamu
+                html_table = export_df.to_html(classes='table table-striped', index=False)
+                print_html = f"""
+                <html>
+                <head>
+                    <title>{title_text}</title>
+                    <style>
+                        body {{ font-family: Arial, sans-serif; margin: 20px; }}
+                        h2 {{ text-align: center; color: #333; }}
+                        table {{ width: 100%; border-collapse: collapse; margin-top: 20px; }}
+                        th, td {{ border: 1px solid #ddd; padding: 8px; text-align: left; }}
+                        th {{ background-color: #f2f2f2; }}
+                    </style>
+                </head>
+                <body>
+                    <h2>🏫 TRIAD APP - {title_text}</h2>
+                    {html_table}
+                    <script>
+                        window.onload = function() {{ window.print(); }}
+                    </script>
+                </body>
+                </html>
+                """
+                
+                # Button Print Kallattii
+                st.components.v1.html(
+                    f"""
+                    <script>
+                    function printContent() {{
+                        var myWindow = window.open('', '', 'height=600,width=800');
+                        myWindow.document.write(`{print_html}`);
+                        myWindow.document.close();
+                        myWindow.focus();
+                    }}
+                    </script>
+                    <button onclick="printContent()" style="background-color: #4CAF50; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; font-size: 16px;">
+                        🖨️ Kallattiin Print Godhuu (Direct Print)
+                    </button>
+                    """,
+                    height=50
+                )
+            else:
+                st.warning(f"Ragaan ramaddii kanaaf argame hin jiru.")
 
             st.markdown("---")
 
