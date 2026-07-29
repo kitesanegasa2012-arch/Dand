@@ -17,7 +17,7 @@ st.set_page_config(
     layout="wide"
 )
 
-# Modern CSS Injection (Fonts, Colors, Borders, Shadows)
+# Modern CSS Injection (Fonts, Colors, Square Borders, Shadows)
 st.markdown("""
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
@@ -31,17 +31,18 @@ st.markdown("""
         background: linear-gradient(135deg, #1b5e20 0%, #2e7d32 50%, #4caf50 100%);
         color: white;
         padding: 40px;
-        border-radius: 20px;
+        border-radius: 0px;
         text-align: center;
         box-shadow: 0 10px 30px rgba(0,0,0,0.2);
         margin-bottom: 30px;
+        border: 3px solid #0d3811;
     }
     
-    /* Modern Card Container */
+    /* Modern Square Card Container */
     .stCard {
         background-color: #ffffff;
-        border: 2px solid #e0e0e0;
-        border-radius: 12px;
+        border: 2px solid #1b5e20;
+        border-radius: 0px;
         padding: 20px;
         box-shadow: 0 4px 12px rgba(0,0,0,0.05);
     }
@@ -103,63 +104,82 @@ if os.path.exists(profile_pic_path):
 else:
     st.sidebar.warning("Suuraan 'qixxeessaa.jpg' jedhu hin argamne.")
 
-st.sidebar.markdown("### 📝 Seensa (Introduction)")
-st.sidebar.markdown(
-    """
-    Barnoonni bu'uura misoomaa fi guddina hawaasaati. Sadarkaa amma irra jirruutti, saffisi fi qulqullinni barnootaa akka fooyya’uuf tooftaa ammayyaa’aa fayyadamuun dirqama ta’a. 
-
-    Akkaataa kanaan, rakkoolee qormaataa fi madaallii barattootaa keessatti mul’atan hiikuuf, akkasumas barsiisotaaf qorannoo dandeettii saffisaa (Diagnostic Assessment) kennuuf appilikeeshinii haaraa maqaan isaa **TRIAD (Tracking Rates In Academic Development)** jedhamu qopheesseera. 
-
-    **Hiika Gabajee TRIAD (Acronym Meaning):**
-    * **T** - Tracking (Hordofuu)
-    * **R** - Rates (Sadarkaalee / Safartuu)
-    * **I** - In (Keessatti)
-    * **A** - Academic (Barnootaa / Akkaadaamii)
-    * **D** - Development (Guddina / Misooma)
-
-    Waliigalaatti TRIAD: *"Guddina Akkaadaamii Barattootaa Sadarkaan Hordofuuf Gargaara."*
-
-    Appilikeeshiniin TRIAD kun  sadarkaa barnootaa  hundatti tajaajiluu kan danda’uun dizaayini kan ta'eedha. Kunis:
-    * Manneen barnootaa sadarkaa 1ffaan dura (Pre-primary / Kindergartens)
-    * Manneen barnootaa sadarkaa 1ffaa (Kutaa 1 – 6)
-    * Manneen barnootaa sadarkaa giddu-galeessaa (Kutaa 7 – 8)
+# --- SEENSA (INTRODUCTION) ---
+st.sidebar.markdown("""
+<div style="background-color: #fcfcfc; border: 2px solid #1b5e20; border-radius: 0px; padding: 15px; margin-bottom: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
+    <h3 style="color: #1b5e20; font-family: 'Poppins', sans-serif; margin-top: 0; font-size: 15px; font-weight: 600;">📝 Seensa (Introduction)</h3>
+    <p style="font-family: 'Poppins', sans-serif; font-size: 12.5px; color: #333333; line-height: 1.6; margin-bottom: 0;">
+    Barnoonni bu'uura misoomaa fi guddina hawaasaati. Sadarkaa amma irra jirruutti, saffisi fi qulqullinni barnootaa akka fooyya’uuf tooftaa ammayyaa’aa fayyadamuun dirqama ta’a.<br><br> 
+    Akkaataa kanaan, rakkoolee qormaataa fi madaallii barattootaa keessatti mul’atan hiikuuf, akkasumas barsiisotaaf qorannoo dandeettii saffisaa (Diagnostic Assessment) kennuuf appilikeeshinii haaraa maqaan isaa <b>TRIAD (Tracking Rates In Academic Development)</b> jedhamu qopheesseera.<br><br> 
+    <b>Hiika Gabajee TRIAD (Acronym Meaning):</b><br>
+    * <b>T</b> - Tracking (Hordofuu)<br>
+    * <b>R</b> - Rates (Sadarkaalee / Safartuu)<br>
+    * <b>I</b> - In (Keessatti)<br>
+    * <b>A</b> - Academic (Barnootaa / Akkaadaamii)<br>
+    * <b>D</b> - Development (Guddina / Misooma)<br><br>
+    Waliigalaatti TRIAD: <i>"Guddina Akkaadaamii Barattootaa Sadarkaan Hordofuuf Gargaara."</i><br><br>
+    Appilikeeshiniin TRIAD kun  sadarkaa barnootaa  hundatti tajaajiluu kan danda’uun dizaayini kan ta'eedha. Kunis:<br>
+    * Manneen barnootaa sadarkaa 1ffaan dura (Pre-primary / Kindergartens)<br>
+    * Manneen barnootaa sadarkaa 1ffaa (Kutaa 1 – 6)<br>
+    * Manneen barnootaa sadarkaa giddu-galeessaa (Kutaa 7 – 8)<br>
     * Manneen barnootaa sadarkaa 2ffaa (Kutaa 9 – 12) keessatti milkaa’inaan hojjechuu ni danda’a.
-    """
-    )
-st.sidebar.markdown("### 🎯 Ka'umsi kalaqa appichaa")
-st.sidebar.write(
-    "Madaalliin barattootaa baramaa ta'e yeroo fudhachuu fi xiinxala gadi-fagoo kennuu dhabuu fi Barsiisonni barataan kam akka dadhabuu fi sadarkaa kami irratti deeggarsa akka barbaadu adda baasuuf ragaa walitti qindeessuu irratti rakkachuu. "
-   
-)
+    </p>
+</div>
+""", unsafe_allow_html=True)
 
-st.sidebar.markdown("### 🎯 Kaayyoo Appichaa")
-st.sidebar.write(
-    "Kaayyoon Guddaan kalaqa appi kana daree barnootaa keessatti barattoota dandeettii isaanitiin adda baasuun "
-    "deggersa barbaachisaa kennuun qabxii barattoota foyyeessuuf kan kalaqamedha."
-)
-st.sidebar.markdown("### 🎯 Barbaachisummaa App kanaa")
-st.sidebar.write(
-    "Dandeettii barataan tokko qabu qabxii isaa ilaaluun sekoondii muraasa keessatti adda baasa. "
-    "Ragaa Barattootaa dandeettii sadaniin koorniyaa isaaniin sekoondii keessatti adda baasuun ofii qindeessa."
-    "Barsiisaa fi Hoggansa mana barumsaaf ragaa qulqulluu yeroon gabaasa dhiyeessaafi."
-    "Daataa Barattoota waligalaa kutichaa,Kan gosa barnoota sana qoraman fi kan hin qoramne adda baasuun dhiiraa fi dubaraan qindeessa."
-    "waraqaa eenyummaa barataa  odeeffannoo guutuu ta'een qopheessee dhiyeessa."
-    "Haala Dandeetti Baratan tokko gosa barnoota sana irratti qabu xiinxaluun waraqaa ragaa tokko tokkoo gosa barnootaatiin kennaafi."
-    "Ragaaleen inni nuuf kennuu hundi exceltiin qinda'anii print ykn download ta'uun yeroo kan qusatani waan ta'eef barbaachisaadha."
-)
+# --- KA'UMSI KALAQA APPICHAA ---
+st.sidebar.markdown("""
+<div style="background-color: #fcfcfc; border: 2px solid #1b5e20; border-radius: 0px; padding: 15px; margin-bottom: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
+    <h3 style="color: #1b5e20; font-family: 'Poppins', sans-serif; margin-top: 0; font-size: 15px; font-weight: 600;">🎯 Ka'umsi kalaqa appichaa</h3>
+    <p style="font-family: 'Poppins', sans-serif; font-size: 12.5px; color: #333333; line-height: 1.6; margin-bottom: 0;">
+    Madaalliin barattootaa baramaa ta'e yeroo fudhachuu fi xiinxala gadi-fagoo kennuu dhabuu fi Barsiisonni barataan kam akka dadhabuu fi sadarkaa kami irratti deeggarsa akka barbaadu adda baasuuf ragaa walitti qindeessuu irratti rakkachuu.
+    </p>
+</div>
+""", unsafe_allow_html=True)
+
+# --- KAAYYOO APPICHAA ---
+st.sidebar.markdown("""
+<div style="background-color: #fcfcfc; border: 2px solid #1b5e20; border-radius: 0px; padding: 15px; margin-bottom: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
+    <h3 style="color: #1b5e20; font-family: 'Poppins', sans-serif; margin-top: 0; font-size: 15px; font-weight: 600;">🎯 Kaayyoo Appichaa</h3>
+    <p style="font-family: 'Poppins', sans-serif; font-size: 12.5px; color: #333333; line-height: 1.6; margin-bottom: 0;">
+    Kaayyoon Guddaan kalaqa appi kana daree barnootaa keessatti barattoota dandeettii isaanitiin adda baasuun deggersa barbaachisaa kennuun qabxii barattoota foyyeessuuf kan kalaqamedha.
+    </p>
+</div>
+""", unsafe_allow_html=True)
+
+# --- BARBAACHISUMMAA APP KANAA ---
+st.sidebar.markdown("""
+<div style="background-color: #fcfcfc; border: 2px solid #1b5e20; border-radius: 0px; padding: 15px; margin-bottom: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
+    <h3 style="color: #1b5e20; font-family: 'Poppins', sans-serif; margin-top: 0; font-size: 15px; font-weight: 600;">🎯 Barbaachisummaa App kanaa</h3>
+    <p style="font-family: 'Poppins', sans-serif; font-size: 12.5px; color: #333333; line-height: 1.6; margin-bottom: 0;">
+    Dandeettii barataan tokko qabu qabxii isaa ilaaluun sekoondii muraasa keessatti adda baasa. 
+    Ragaa Barattootaa dandeettii sadaniin koorniyaa isaaniin sekoondii keessatti adda baasuun ofii qindeessa.
+    Barsiisaa fi Hoggansa mana barumsaaf ragaa qulqulluu yeroon gabaasa dhiyeessaafi.
+    Daataa Barattoota waligalaa kutichaa,Kan gosa barnoota sana qoraman fi kan hin qoramne adda baasuun dhiiraa fi dubaraan qindeessa.
+    waraqaa eenyummaa barataa  odeeffannoo guutuu ta'een qopheessee dhiyeessa.
+    Haala Dandeetti Baratan tokko gosa barnoota sana irratti qabu xiinxaluun waraqaa ragaa tokko tokkoo gosa barnootaatiin kennaafi.
+    Ragaaleen inni nuuf kennuu hundi exceltiin qinda'anii print ykn download ta'uun yeroo kan qusatani waan ta'eef barbaachisaadha.
+    </p>
+</div>
+""", unsafe_allow_html=True)
 
 st.sidebar.markdown("---")
-st.sidebar.subheader("📖 Qajeelfama Itti Fayyadamaa")
-st.sidebar.markdown(
-    """
-  "  App kana fayyadamuuf bilbila  harkaa ykn komputera irratti buufachuun yeroo kamuu mana hojittis ta'e bakka kamitti fayadamuun ni danda'a"
-  "Appiin kun yeroof tajaajila enternetiitiin kan hojjetuufi Haareeffamaa fi foyya'aa kan deemudha.kanaaf,appi kanatti fayyadamuuf tartiiba armaan gadii fayyadamuun dirqama."
-1. **Madda Ragaa:** Faayilii haaraa ykn ragaa kuufame filachuu.
-2. **Kuusuu (Save):** Faayiliin fe'ame akka kuufamuuf buttoon 'Save' xuquu.
-3. **Qindaa'ina:** Column maqaa, koorniyaa, fi gosa barnootaa filachuu.
-4. **Bu'aa Ilaali:** Dandeettii barattootaa fi xiinxala guutuu ilaali!
-"""
-)
+
+# --- QAJEELFAMA ITTI FAYYADAMAA ---
+st.sidebar.markdown("""
+<div style="background-color: #fcfcfc; border: 2px solid #1b5e20; border-radius: 0px; padding: 15px; margin-bottom: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
+    <h3 style="color: #1b5e20; font-family: 'Poppins', sans-serif; margin-top: 0; font-size: 15px; font-weight: 600;">📖 Qajeelfama Itti Fayyadamaa</h3>
+    <p style="font-family: 'Poppins', sans-serif; font-size: 12.5px; color: #333333; line-height: 1.6; margin-bottom: 0;">
+    "App kana fayyadamuuf bilbila  harkaa ykn komputera irratti buufachuun yeroo kamuu mana hojittis ta'e bakka kamitti fayadamuun ni danda'ama"<br>
+    "Appiin kun yeroof tajaajila enternetiitiin kan hojjetuufi Haareeffamaa fi foyya'aa kan deemudha.kanaaf,appi kanatti fayyadamuuf tartiiba armaan gadii fayyadamuun dirqama."<br>
+    1. <b>Madda Ragaa:</b> Faayilii haaraa ykn ragaa kuufame filachuu.<br>
+    2. <b>Kuusuu (Save):</b> Faayiliin fe'ame akka kuufamuuf buttoon 'Save' xuquu.<br>
+    3. <b>Qindaa'ina:</b> Column maqaa, koorniyaa, fi gosa barnootaa sirriitti filachuun guutuu.<br>
+    4. <b>Bu'aa Ilaaluu:</b> Dandeettii barattootaa fi xiinxala guutuu ilaali!<br>
+    5. <b>Bu'aa argame download ykn printi gochuun gabaasa qopheessuu fi xiinxaluu</b>
+    </p>
+</div>
+""", unsafe_allow_html=True)
 
 @st.cache_resource
 def load_ocr_reader():
@@ -378,12 +398,12 @@ if df is not None:
         selected_student = st.selectbox("Barataa:", student_list if student_list else [""], key="id_card_student_select")
     
     uploaded_student_photo = st.file_uploader("🖼️ Suuraa Barataa Kanaaf Fe'i (Optional for ID Card)", type=["png", "jpg", "jpeg"], key="student_photo_upload_card")
-    photo_html = "<div style='width:75px; height:90px; background:#ddd; border-radius:4px; display:inline-block; text-align:center; line-height:90px; font-size:10px; color:#555;'>Suuraa</div>"
+    photo_html = "<div style='width:75px; height:90px; background:#ddd; border-radius:0px; display:inline-block; text-align:center; line-height:90px; font-size:10px; color:#555;'>Suuraa</div>"
     
     if uploaded_student_photo is not None:
         bytes_data = uploaded_student_photo.getvalue()
         base64_img = base64.b64encode(bytes_data).decode('utf-8')
-        photo_html = f"<img src='data:image/png;base64,{base64_img}' style='width:75px; height:90px; object-fit:cover; border-radius:4px; border: 1.5px solid #1b5e20;'>"
+        photo_html = f"<img src='data:image/png;base64,{base64_img}' style='width:75px; height:90px; object-fit:cover; border-radius:0px; border: 1.5px solid #1b5e20;'>"
 
     if student_list and selected_student:
         student_data = df[df[name_col] == selected_student].iloc[0]
@@ -403,7 +423,7 @@ if df is not None:
                 .card {{
                     width: 400px;
                     border: 2.5px solid #1b5e20;
-                    border-radius: 12px;
+                    border-radius: 0px;
                     padding: 15px;
                     font-family: 'Poppins', Arial, sans-serif;
                     background: #ffffff;
@@ -414,7 +434,7 @@ if df is not None:
                 .school-title {{ font-size: 15px; font-weight: bold; color: #1b5e20; text-align: center; text-transform: uppercase; }}
                 .card-header {{ font-size: 11px; color: #555; text-align: center; margin-bottom: 5px; font-weight: 600; }}
                 .student-info {{ font-size: 13px; margin: 3px 0; color: #222; }}
-                .badge-box {{ background-color: #e8f5e9; padding: 4px 8px; border-radius: 6px; display: inline-block; font-weight: bold; color: #1b5e20; font-size: 12px; margin-top: 4px; }}
+                .badge-box {{ background-color: #e8f5e9; padding: 4px 8px; border-radius: 0px; display: inline-block; font-weight: bold; color: #1b5e20; font-size: 12px; margin-top: 4px; border: 1px solid #1b5e20; }}
                 .footer {{ margin-top: 10px; font-size: 9px; color: #777; border-top: 1px solid #ddd; padding-top: 5px; text-align: center; }}
             </style>
         </head>
@@ -504,7 +524,7 @@ if df is not None:
                     .report-card {{
                         width: 620px;
                         border: 3px solid #1b5e20;
-                        border-radius: 12px;
+                        border-radius: 0px;
                         padding: 25px;
                         background: #ffffff;
                         box-shadow: 0 4px 20px rgba(0,0,0,0.1);
@@ -512,11 +532,11 @@ if df is not None:
                     }}
                     .header-title {{ text-align: center; color: #1b5e20; font-size: 18px; font-weight: bold; }}
                     .header-sub {{ text-align: center; color: #555; font-size: 12px; margin-bottom: 10px; }}
-                    .top-section {{ display: flex; justify-content: space-between; align-items: center; background: #f1f8e9; padding: 12px; border-radius: 8px; margin-bottom: 15px; }}
+                    .top-section {{ display: flex; justify-content: space-between; align-items: center; background: #f1f8e9; padding: 12px; border-radius: 0px; margin-bottom: 15px; border: 1px solid #1b5e20; }}
                     table {{ width: 100%; border-collapse: collapse; margin-top: 10px; margin-bottom: 15px; }}
-                    th, td {{ border: 1px solid #ddd; padding: 8px; text-align: left; font-size: 13px; }}
+                    th, td {{ border: 1px solid #1b5e20; padding: 8px; text-align: left; font-size: 13px; }}
                     th {{ background-color: #e8f5e9; color: #1b5e20; }}
-                    .summary-box {{ font-size: 13px; font-weight: bold; margin-top: 10px; padding: 10px; background: #e8f5e9; border-radius: 6px; border-left: 4px solid #1b5e20; }}
+                    .summary-box {{ font-size: 13px; font-weight: bold; margin-top: 10px; padding: 10px; background: #e8f5e9; border-radius: 0px; border-left: 4px solid #1b5e20; border: 1px solid #1b5e20; }}
                     .footer-note {{ text-align: center; font-size: 11px; color: #777; margin-top: 15px; border-top: 1px solid #ddd; padding-top: 8px; }}
                 </style>
             </head>
@@ -568,7 +588,7 @@ if df is not None:
                         setTimeout(function() {{ myWindow.print(); }}, 500);
                     }}
                     </script>
-                    <button onclick="printReportCard()" style="background-color: #1b5e20; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; font-size: 14px; width: 100%;">
+                    <button onclick="printReportCard()" style="background-color: #1b5e20; color: white; padding: 10px 20px; border: none; border-radius: 0px; cursor: pointer; font-size: 14px; width: 100%; border: 1.5px solid #0d3811;">
                         🖨️ Kallattiin Print Godhuu (Print Report Card)
                     </button>
                     """,
