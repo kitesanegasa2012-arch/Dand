@@ -226,15 +226,15 @@ if df is not None:
     with col_c:
         subject_cols = st.multiselect("Kolomanii Gosa Barnootaa:", [col for col in all_columns if col not in [name_col, gender_col]], key="col_subjects_multiselect")
 
-    # Additional Column Selectors for ID Card (Kutaa, Daree, Lakkofsa/ID)
-    st.markdown("##### Qindaa'ina Dabalataa Kaardii Barataaf (Optional ID Details)")
-    col_d, col_e, col_f = st.columns(3)
-    with col_d:
-        grade_col = st.selectbox("Kolomanii Kutaa (Grade):", ["Hin jiru"] + all_columns, key="col_grade_select")
-    with col_e:
-        section_col = st.selectbox("Kolomanii Daree (Section):", ["Hin jiru"] + all_columns, key="col_section_select")
-    with col_f:
+    # Lakk. Eenyummaa, Kutaa, fi Daree (Kutaa fi Daree Excel irraa dubbisuu dhiisee iddoo Lakk ID cinaatti akka barreessitu qindaa'e)
+    st.markdown("##### Qindaa'ina Lakk. Eenyummaa, Kutaa fi Daree Barataa")
+    col_id_1, col_id_2, col_id_3 = st.columns(3)
+    with col_id_1:
         id_num_col = st.selectbox("Kolomanii Lakk. Eenyummaa/Roll (ID):", ["Hin jiru"] + all_columns, key="col_id_select")
+    with col_id_2:
+        manual_grade = st.text_input("Kutaa (Grade) Galchi:", value="", placeholder="Fkn: 9", key="manual_grade_input")
+    with col_id_3:
+        manual_section = st.text_input("Daree (Section) Galchi:", value="", placeholder="Fkn: A", key="manual_section_input")
 
     st.markdown("---")
     st.subheader("👀 Daataa Jalqabaa fi Baay'ina Barattoota Waliigalaa")
@@ -336,17 +336,12 @@ if df is not None:
     st.markdown("---")
     st.subheader("🪪 Kaardii Eenyummaa Barataa Qopheessuu (Student ID Card)")
     
-    # Maqaa Mana Barumsaa, Barataa, Kutaa, fi Daree Kallattiidhaan Kaardiin Olitti Akka Galchitu Qindaa'e (Columns 4)
-    card_top_col1, card_top_col2, card_top_col3, card_top_col4 = st.columns(4)
+    card_top_col1, card_top_col2 = st.columns(2)
     with card_top_col1:
         school_name_input = st.text_input("Maqaa Mana Barumsaa:", "MANA BARUMSAA SADARKAA 2FFAA", key="school_name_general_input")
     with card_top_col2:
         student_list = df[name_col].unique().tolist() if name_col in df.columns else []
         selected_student = st.selectbox("Barataa:", student_list if student_list else [""], key="id_card_student_select")
-    with card_top_col3:
-        manual_grade = st.text_input("Kutaa (Grade):", value="", placeholder="Fkn: 9", key="manual_grade_input")
-    with card_top_col4:
-        manual_section = st.text_input("Daree (Section):", value="", placeholder="Fkn: A", key="manual_section_input")
     
     uploaded_student_photo = st.file_uploader("🖼️ Suuraa Barataa Kanaaf Fe'i (Optional for ID Card)", type=["png", "jpg", "jpeg"], key="student_photo_upload_card")
     photo_html = "<div style='width:75px; height:90px; background:#ddd; border-radius:4px; display:inline-block; text-align:center; line-height:90px; font-size:10px; color:#555;'>Suuraa</div>"
@@ -361,9 +356,9 @@ if df is not None:
         s_name = student_data[name_col]
         s_gender = student_data[gender_col] if gender_col in df.columns else "N/A"
         
-        # Kutaa fi Daree: Yoo achitti itti barreeffame isa fayyadama, yoo duwwaa ta'e immoo Column Excel irraa fudha
-        s_grade = manual_grade if manual_grade else (student_data[grade_col] if grade_col != "Hin jiru" and grade_col in df.columns else "N/A")
-        s_section = manual_section if manual_section else (student_data[section_col] if section_col != "Hin jiru" and section_col in df.columns else "N/A")
+        # Kutaa fi Daree iddoo Lakk ID cinaatti guutte irraa fudhata
+        s_grade = manual_grade if manual_grade else "N/A"
+        s_section = manual_section if manual_section else "N/A"
         
         s_id_num = student_data[id_num_col] if id_num_col != "Hin jiru" and id_num_col in df.columns else "N/A"
         
@@ -432,8 +427,8 @@ if df is not None:
             rc_student_data = df[df[name_col] == selected_student_rc].iloc[0]
             rc_name = rc_student_data[name_col]
             rc_gender = rc_student_data[gender_col] if gender_col in df.columns else "N/A"
-            rc_grade = manual_grade if manual_grade else (rc_student_data[grade_col] if grade_col != "Hin jiru" and grade_col in df.columns else "N/A")
-            rc_section = manual_section if manual_section else (rc_student_data[section_col] if section_col != "Hin jiru" and section_col in df.columns else "N/A")
+            rc_grade = manual_grade if manual_grade else "N/A"
+            rc_section = manual_section if manual_section else "N/A"
             rc_id_num = rc_student_data[id_num_col] if id_num_col != "Hin jiru" and id_num_col in df.columns else "N/A"
             
             rc_records = []
