@@ -66,8 +66,8 @@ if not st.session_state.entered_app:
             <h1>🏫 TRIAD ANALYTICS SYSTEM</h1>
             <h3>Appii Barattoota Daree Keessatti Dandeetti Sadiin Qoodu</h3>
             <p style="font-size: 16px; max-width: 700px; margin: auto; line-height: 1.6;">
-                Baga Nagaan Gara TRIAD appilikeeshiniikootti nagaan Dhuftan! Mogaasni maqaa appikoo TRIAD jedhun 
-                Afaan Ingiliffaan <b>(Tracking Rates in Academic Development)</b> tii hiikama. Barattoota dandeettii 
+                Baga Nagaan Gara TRIAD appilikeeshinii kootti nagaan Dhuftan! Mogaasni maqaa appikoo TRIAD jedhama.Hiikni TRIAD: 
+                Afaan Ingiliffaan <b>(Tracking Rates in Academic Development)</b> jechuudha. Barattoota dandeettii 
                 isaaniitiin adda baasuun deggersa barbaachisaa kennuuf kan qopha'edha.
             </p>
             <br>
