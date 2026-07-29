@@ -152,6 +152,8 @@ st.sidebar.markdown("---")
 st.sidebar.subheader("📖 Qajeelfama Itti Fayyadamaa")
 st.sidebar.markdown(
     """
+  "  App kana fayyadamuuf bilbila  harkaa ykn komputera irratti buufachuun yeroo kamuu mana hojittis ta'e bakka kamitti fayadamuun ni danda'a"
+  "Appiin kun yeroof tajaajila enternetiitiin kan hojjetuufi Haareeffamaa fi foyya'aa kan deemudha.kanaaf,appi kanatti fayyadamuuf tartiiba armaan gadii fayyadamuun dirqama."
 1. **Madda Ragaa:** Faayilii haaraa ykn ragaa kuufame filachuu.
 2. **Kuusuu (Save):** Faayiliin fe'ame akka kuufamuuf buttoon 'Save' xuquu.
 3. **Qindaa'ina:** Column maqaa, koorniyaa, fi gosa barnootaa filachuu.
