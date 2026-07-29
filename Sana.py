@@ -255,7 +255,7 @@ if df is not None:
             ]
             
             # Barattoota qoraman (Ciccimoo + Giddu-galeeyyii + Suuta barattoota)
-            qoraman_df = pd.concat([ciccimoo, giddu galeeyyii,suuta barattoota],)
+            qoraman_df = pd.concat([ciccimoo, giddu galeeyyii,suuta barattoota])
             
             # Barattoota qabxii hin qabne (None / Absent / Missing)
             none_df = temp_df[temp_df["Calculated_Score"].isna()]
@@ -297,7 +297,7 @@ if df is not None:
                     st.dataframe(giddu[display_cols], use_container_width=True, hide_index=True)
 
             with col3:
-                st.metric(label="⚠️ Suuta Baratoo (< 50%)", value=f"{len(suuta)} Baratoo")
+                st.metric(label="⚠️ Suuta Barattoota (< 50%)", value=f"{len(suuta)} Barattoota")
                 if not suuta.empty:
                     dhiira_s = len(suuta[suuta[gender_col].astype(str).str.contains("Dhi|M", case=False)])
                     dhalaa_s = len(suuta[suuta[gender_col].astype(str).str.contains("Dha|F", case=False)])
