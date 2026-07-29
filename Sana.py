@@ -130,7 +130,7 @@ st.sidebar.markdown("""
 # --- KA'UMSI KALAQA APPICHAA ---
 st.sidebar.markdown("""
 <div style="background-color: #fcfcfc; border: 2px solid #1b5e20; border-radius: 0px; padding: 15px; margin-bottom: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
-    <h3 style="color: #1b5e20; font-family: 'Poppins', sans-serif; margin-top: 0; font-size: 15px; font-weight: 600;">🎯 Ka'umsi kalaqa appichaa</h3>
+    <h3 style="color: #1b5e20; font-family: 'Poppins', sans-serif; margin-top: 0; font-size: 15px; font-weight: 600;">💡 Ka'umsi kalaqa appichaa</h3>
     <p style="font-family: 'Poppins', sans-serif; font-size: 12.5px; color: #333333; line-height: 1.6; margin-bottom: 0;">
     Madaalliin barattootaa baramaa ta'e yeroo fudhachuu fi xiinxala gadi-fagoo kennuu dhabuu fi Barsiisonni barataan kam akka dadhabuu fi sadarkaa kami irratti deeggarsa akka barbaadu adda baasuuf ragaa walitti qindeessuu irratti rakkachuu.
     </p>
@@ -150,7 +150,7 @@ st.sidebar.markdown("""
 # --- BARBAACHISUMMAA APP KANAA ---
 st.sidebar.markdown("""
 <div style="background-color: #fcfcfc; border: 2px solid #1b5e20; border-radius: 0px; padding: 15px; margin-bottom: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
-    <h3 style="color: #1b5e20; font-family: 'Poppins', sans-serif; margin-top: 0; font-size: 15px; font-weight: 600;">🎯 Barbaachisummaa App kanaa</h3>
+    <h3 style="color: #1b5e20; font-family: 'Poppins', sans-serif; margin-top: 0; font-size: 15px; font-weight: 600;">⭐ Barbaachisummaa App kanaa</h3>
     <p style="font-family: 'Poppins', sans-serif; font-size: 12.5px; color: #333333; line-height: 1.6; margin-bottom: 0;">
     Dandeettii barataan tokko qabu qabxii isaa ilaaluun sekoondii muraasa keessatti adda baasa. 
     Ragaa Barattootaa dandeettii sadaniin koorniyaa isaaniin sekoondii keessatti adda baasuun ofii qindeessa.
