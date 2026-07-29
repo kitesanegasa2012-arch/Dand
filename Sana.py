@@ -137,6 +137,16 @@ st.sidebar.write(
     "Kaayyoon Guddaan kalaqa appi kana daree barnootaa keessatti barattoota dandeettii isaanitiin adda baasuun "
     "deggersa barbaachisaa kennuun qabxii barattoota foyyeessuuf kan kalaqamedha."
 )
+st.sidebar.markdown("### 🎯 Barbaachisummaa App kanaa")
+st.sidebar.write(
+    "Dandeettii barataan tokko qabu qabxii isaa ilaaluun sekoondii muraasa keessatti adda baasa. "
+    "Ragaa Barattootaa dandeettii sadaniin koorniyaa isaaniin sekoondii keessatti adda baasuun ofii qindeessa."
+    "Barsiisaa fi Hoggansa mana barumsaaf ragaa qulqulluu yeroon gabaasa dhiyeessaafi."
+    "Daataa Barattoota waligalaa kutichaa,Kan gosa barnoota sana qoraman fi kan hin qoramne adda baasuun dhiiraa fi dubaraan qindeessa."
+    "waraqaa eenyummaa barataa  odeeffannoo guutuu ta'een qopheessee dhiyeessa."
+    "Haala Dandeetti Baratan tokko gosa barnoota sana irratti qabu xiinxaluun waraqaa ragaa tokko tokkoo gosa barnootaatiin kennaafi."
+    "Ragaaleen inni nuuf kennuu hundi exceltiin qinda'anii print ykn download ta'uun yeroo kan qusatani waan ta'eef barbaachisaadha."
+)
 
 st.sidebar.markdown("---")
 st.sidebar.subheader("📖 Qajeelfama Itti Fayyadamaa")
