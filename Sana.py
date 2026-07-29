@@ -125,6 +125,11 @@ st.sidebar.markdown(
     * Manneen barnootaa sadarkaa giddu-galeessaa (Kutaa 7 – 8)
     * Manneen barnootaa sadarkaa 2ffaa (Kutaa 9 – 12) keessatti milkaa’inaan hojjechuu ni danda’a.
     """
+    )
+st.sidebar.markdown("### 🎯 Ka'umsi kalaqa appichaa")
+st.sidebar.write(
+    "Madaalliin barattootaa baramaa ta'e yeroo fudhachuu fi xiinxala gadi-fagoo kennuu dhabuu fi Barsiisonni barataan kam akka dadhabuu fi sadarkaa kami irratti deeggarsa akka barbaadu adda baasuuf ragaa walitti qindeessuu irratti rakkachuu. "
+   
 )
 
 st.sidebar.markdown("### 🎯 Kaayyoo Appichaa")
