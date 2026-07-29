@@ -255,7 +255,7 @@ if df is not None:
             ]
             
             # Barattoota qoraman (Ciccimoo + Giddu-galeeyyii + Suuta barattoota)
-            qoraman_df = pd.concat([ciccimoo, giddu galeeyyii, suuta barattoota,])
+            qoraman_df = pd.concat([ciccimoo, giddu galeeyyii,suuta barattoota],)
             
             # Barattoota qabxii hin qabne (None / Absent / Missing)
             none_df = temp_df[temp_df["Calculated_Score"].isna()]
