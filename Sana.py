@@ -108,7 +108,7 @@ st.sidebar.markdown(
     """
     Barnoonni bu'uura misoomaa fi guddina hawaasaati. Sadarkaa amma irra jirruutti, saffisi fi qulqullinni barnootaa akka fooyya’uuf tooftaa ammayyaa’aa fayyadamuun dirqama ta’a. 
 
-    Akkaataa kanaan, rakkoolee qormaataa fi madaallii barattootaa keessatti mul’atan hiikuuf, akkasumas barsiisotaaf qorannoo dandeettii saffisaa (Diagnostic Assessment) kennuuf appilikeeshinii haaraa maqaan isaa **TRIAD (Tracking Rates In Academic Development)** jedhamu qopheesseera. Appiin kun sadarkaa mana barumsaa Aanaa Meettaa Walqixxeetti qulqullina barnootaa mirkaneessuuf shoora olaanaa qaba.
+    Akkaataa kanaan, rakkoolee qormaataa fi madaallii barattootaa keessatti mul’atan hiikuuf, akkasumas barsiisotaaf qorannoo dandeettii saffisaa (Diagnostic Assessment) kennuuf appilikeeshinii haaraa maqaan isaa **TRIAD (Tracking Rates In Academic Development)** jedhamu qopheesseera. 
 
     **Hiika Gabajee TRIAD (Acronym Meaning):**
     * **T** - Tracking (Hordofuu)
@@ -117,9 +117,9 @@ st.sidebar.markdown(
     * **A** - Academic (Barnootaa / Akkaadaamii)
     * **D** - Development (Guddina / Misooma)
 
-    Waliigalaatti TRIAD: *"Guddina Akkaadaamii Barattootaa Sadarkaan Hordofuu."*
+    Waliigalaatti TRIAD: *"Guddina Akkaadaamii Barattootaa Sadarkaan Hordofuuf Gargaara."*
 
-    Appilikeeshiniin TRIAD kun sadarkaalee barnootaa gurguddoo fi sadarkaa hundatti tajaajiluu kan danda’uun dizaayini kan ta'eedha. Kunis:
+    Appilikeeshiniin TRIAD kun  sadarkaa barnootaa  hundatti tajaajiluu kan danda’uun dizaayini kan ta'eedha. Kunis:
     * Manneen barnootaa sadarkaa 1ffaan dura (Pre-primary / Kindergartens)
     * Manneen barnootaa sadarkaa 1ffaa (Kutaa 1 – 6)
     * Manneen barnootaa sadarkaa giddu-galeessaa (Kutaa 7 – 8)
