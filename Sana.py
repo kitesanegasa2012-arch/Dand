@@ -341,12 +341,12 @@ if df is not None:
     student_list = df[name_col].unique().tolist() if name_col in df.columns else []
     
     uploaded_student_photo = st.file_uploader("🖼️ Suuraa Barataa Kanaaf Fe'i (Optional for ID Card)", type=["png", "jpg", "jpeg"], key="student_photo_upload_card")
-    photo_html = "<div style='width:70px; height:85px; background:#ddd; border-radius:4px; display:inline-block; text-align:center; line-height:85px; font-size:10px; color:#555;'>Suuraa</div>"
+    photo_html = "<div style='width:75px; height:90px; background:#ddd; border-radius:4px; display:inline-block; text-align:center; line-height:90px; font-size:10px; color:#555;'>Suuraa</div>"
     
     if uploaded_student_photo is not None:
         bytes_data = uploaded_student_photo.getvalue()
         base64_img = base64.b64encode(bytes_data).decode('utf-8')
-        photo_html = f"<img src='data:image/png;base64,{base64_img}' style='width:70px; height:85px; object-fit:cover; border-radius:4px; border: 1px solid #1b5e20;'>"
+        photo_html = f"<img src='data:image/png;base64,{base64_img}' style='width:75px; height:90px; object-fit:cover; border-radius:4px; border: 1.5px solid #1b5e20;'>"
 
     if student_list:
         selected_student = st.selectbox("Barataa Kaardii Eenyummaa isaaf qopheessuuf barbaaddu filadhu:", student_list, key="id_card_student_select")
@@ -365,8 +365,8 @@ if df is not None:
             <head>
                 <style>
                     .card {{
-                        width: 390px;
-                        border: 2px solid #1b5e20;
+                        width: 400px;
+                        border: 2.5px solid #1b5e20;
                         border-radius: 12px;
                         padding: 15px;
                         font-family: 'Poppins', Arial, sans-serif;
@@ -374,34 +374,34 @@ if df is not None:
                         box-shadow: 0 4px 15px rgba(0,0,0,0.15);
                         margin: auto;
                     }}
-                    .flex-container {{ display: flex; align-items: center; gap: 15px; margin-top: 10px; }}
-                    .school-title {{ font-size: 15px; font-weight: bold; color: #1b5e20; text-align: center; }}
-                    .card-header {{ font-size: 11px; color: #555; text-align: center; margin-bottom: 5px; }}
-                    .student-info {{ font-size: 13px; margin: 3px 0; color: #333; }}
-                    .footer {{ margin-top: 10px; font-size: 10px; color: #777; border-top: 1px solid #ddd; padding-top: 5px; text-align: center; }}
+                    .flex-container {{ display: flex; align-items: center; gap: 15px; margin-top: 8px; }}
+                    .school-title {{ font-size: 15px; font-weight: bold; color: #1b5e20; text-align: center; text-transform: uppercase; }}
+                    .card-header {{ font-size: 11px; color: #555; text-align: center; margin-bottom: 5px; font-weight: 600; }}
+                    .student-info {{ font-size: 13px; margin: 3px 0; color: #222; }}
+                    .badge-box {{ background-color: #e8f5e9; padding: 4px 8px; border-radius: 6px; display: inline-block; font-weight: bold; color: #1b5e20; font-size: 12px; margin-top: 4px; }}
+                    .footer {{ margin-top: 10px; font-size: 9px; color: #777; border-top: 1px solid #ddd; padding-top: 5px; text-align: center; }}
                 </style>
             </head>
             <body>
                 <div class="card">
                     <div class="school-title">🏫 {school_name_input}</div>
-                    <div class="card-header">Kaardii Eenyummaa Barataa (Student ID Card)</div>
-                    <hr style="border: 0.5px solid #1b5e20;">
+                    <div class="card-header">KAARDII EENYUMMAA BARATAA (STUDENT ID CARD)</div>
+                    <hr style="border: 0.5px solid #1b5e20; margin: 6px 0;">
                     <div class="flex-container">
                         <div>{photo_html}</div>
                         <div>
                             <div class="student-info"><b>Maqaa:</b> {s_name}</div>
-                            <div class="student-info"><b>Saala:</b> {s_gender}</div>
-                            <div class="student-info"><b>Kutaa:</b> {s_grade} | <b>Daree:</b> {s_section}</div>
-                            <div class="student-info"><b>Lakk. ID:</b> {s_id_num}</div>
+                            <div class="student-info"><b>Saala:</b> {s_gender} | <b>Lakk ID:</b> {s_id_num}</div>
+                            <div class="badge-box">Kutaa: {s_grade} &nbsp;|&nbsp; Daree: {s_section}</div>
                         </div>
                     </div>
-                    <div class="footer">Designed & Developed by Kitesa Negasa</div>
+                    <div class="footer">TRIAD Analytics App | Designed by Kitesa Negasa</div>
                 </div>
             </body>
             </html>
             """
             
-            st.components.v1.html(card_html, height=250)
+            st.components.v1.html(card_html, height=255)
             
             st.download_button(
                 label=f"📥 Kaardii {s_name} Buusuu (Download Card HTML)",
