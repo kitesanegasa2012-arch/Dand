@@ -139,6 +139,10 @@ if image_to_process is not None:
             st.write("**Barreeffama Suuraa keessaa argame:**", extracted_texts)
 
 if df is not None:
+    # Maqaa koloniiwwan duwwaa ykn bakka duwwaa qaban qulqulleessuu
+    df = df.dropna(how='all')
+    df.columns = [str(c).strip() for c in df.columns]
+
     st.subheader("⚙️ Step 2 & 3: Qindaa'ina Kolomanii fi Daataa Waliigalaa")
     all_columns = df.columns.tolist()
 
@@ -170,78 +174,81 @@ if df is not None:
         st.markdown("---")
         st.subheader("🪪 Kaardii Eenyummaa Barataa Qopheessuu (Student ID Card)")
         
-        student_list = df[name_col].unique().tolist()
-        selected_id_student = st.selectbox("Barataa Kaardii Eenyummaaf barbaaddu filadhu:", student_list, key="id_card_select")
-        
-        if selected_id_student:
-            id_s_row = df[df[name_col] == selected_id_student].iloc[0]
-            id_s_name = id_s_row[name_col]
-            id_s_gender = id_s_row[gender_col]
+        student_list = [str(x) for x in df[name_col].dropna().unique().tolist()]
+        if student_list:
+            selected_id_student = st.selectbox("Barataa Kaardii Eenyummaaf barbaaddu filadhu:", student_list, key="id_card_select")
             
-            card_html = f"""
-            <!DOCTYPE html>
-            <html>
-            <head>
-                <style>
-                    .card {{
-                        width: 350px;
-                        border: 2px solid #2e7d32;
-                        border-radius: 12px;
-                        padding: 20px;
-                        font-family: Arial, sans-serif;
-                        background: #ffffff;
-                        box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-                        text-align: center;
-                        margin: auto;
-                    }}
-                    .school-title {{
-                        font-size: 18px;
-                        font-weight: bold;
-                        color: #1b5e20;
-                    }}
-                    .card-header {{
-                        font-size: 13px;
-                        color: #555;
-                        margin-bottom: 10px;
-                    }}
-                    .student-info {{
-                        text-align: left;
-                        font-size: 15px;
-                        margin: 10px 0;
-                        padding: 5px;
-                        background: #f1f8e9;
-                        border-radius: 4px;
-                    }}
-                    .footer {{
-                        margin-top: 15px;
-                        font-size: 11px;
-                        color: #777;
-                        border-top: 1px solid #ddd;
-                        padding-top: 8px;
-                    }}
-                </style>
-            </head>
-            <body>
-                <div class="card">
-                    <div class="school-title">🏫 TRIAD APP SCHOOL</div>
-                    <div class="card-header">Kaardii Eenyummaa Barataa (Student ID Card)</div>
-                    <hr>
-                    <div class="student-info"><b>Maqaa:</b> {id_s_name}</div>
-                    <div class="student-info"><b>Saala:</b> {id_s_gender}</div>
-                    <div class="student-info"><b>Daree:</b> Barataa/tuu Qormaataa</div>
-                    <div class="footer">Designed & Developed by Kitesa Negasa</div>
-                </div>
-            </body>
-            </html>
-            """
-            st.components.v1.html(card_html, height=260)
-            st.download_button(
-                label=f"📥 Kaardii {id_s_name} Buusuu (Download ID Card HTML)",
-                data=card_html.encode('utf-8'),
-                file_name=f"Kaardii_Eenyummaa_{id_s_name}.html",
-                mime="text/html",
-                key="download_id_btn"
-            )
+            if selected_id_student:
+                id_sub = df[df[name_col].astype(str) == selected_id_student]
+                if not id_sub.empty:
+                    id_s_row = id_sub.iloc[0]
+                    id_s_name = id_s_row[name_col]
+                    id_s_gender = id_s_row[gender_col]
+                    
+                    card_html = f"""
+                    <!DOCTYPE html>
+                    <html>
+                    <head>
+                        <style>
+                            .card {{
+                                width: 350px;
+                                border: 2px solid #2e7d32;
+                                border-radius: 12px;
+                                padding: 20px;
+                                font-family: Arial, sans-serif;
+                                background: #ffffff;
+                                box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+                                text-align: center;
+                                margin: auto;
+                            }}
+                            .school-title {{
+                                font-size: 18px;
+                                font-weight: bold;
+                                color: #1b5e20;
+                            }}
+                            .card-header {{
+                                font-size: 13px;
+                                color: #555;
+                                margin-bottom: 10px;
+                            }}
+                            .student-info {{
+                                text-align: left;
+                                font-size: 15px;
+                                margin: 10px 0;
+                                padding: 5px;
+                                background: #f1f8e9;
+                                border-radius: 4px;
+                            }}
+                            .footer {{
+                                margin-top: 15px;
+                                font-size: 11px;
+                                color: #777;
+                                border-top: 1px solid #ddd;
+                                padding-top: 8px;
+                            }}
+                        </style>
+                    </head>
+                    <body>
+                        <div class="card">
+                            <div class="school-title">🏫 TRIAD APP SCHOOL</div>
+                            <div class="card-header">Kaardii Eenyummaa Barataa (Student ID Card)</div>
+                            <hr>
+                            <div class="student-info"><b>Maqaa:</b> {id_s_name}</div>
+                            <div class="student-info"><b>Saala:</b> {id_s_gender}</div>
+                            <div class="student-info"><b>Daree:</b> Barataa/tuu Qormaataa</div>
+                            <div class="footer">Designed & Developed by Kitesa Negasa</div>
+                        </div>
+                    </body>
+                    </html>
+                    """
+                    st.components.v1.html(card_html, height=260)
+                    st.download_button(
+                        label=f"📥 Kaardii {id_s_name} Buusuu (Download ID Card HTML)",
+                        data=card_html.encode('utf-8'),
+                        file_name=f"Kaardii_Eenyummaa_{id_s_name}.html",
+                        mime="text/html",
+                        key="download_id_btn"
+                    )
 
         # ==========================================
         # 2. WARAQAA RAGAA BARATAA (REPORT CARD)
@@ -250,192 +257,197 @@ if df is not None:
         st.subheader("📋 Waraqaa Ragaa Barataa Guutuu (Report Card - Sem 1 & Sem 2)")
         
         school_name_input = st.text_input("Maqaa Mana Barumsaa (School Name):", value="Mane Barumsaa Sadarkaa 1ffaa & 2ffaa TRIAD")
-        selected_rep_student = st.selectbox("Barataa Waraqaa Ragaa (Report Card) isaaf qopheessuuf barbaaddu filadhu:", student_list, key="report_select")
-        
-        # Subject mapping setup for Sem 1 and Sem 2 columns
-        st.markdown("### ⚙️ Qindaa'ina Gosa Barnootaa, Qabxii Sem 1 fi Sem 2")
-        num_subjects = st.number_input("Baay'ina Gosa Barnootaa (Number of Subjects):", min_value=1, max_value=15, value=5, step=1)
-        
-        subject_mapping = []
-        for i in range(int(num_subjects)):
-            cols = st.columns(3)
-            with cols[0]:
-                s_name_input = st.text_input(f"Maqaa Gosa Barnootaa {i+1}:", value=f"Barnoota {i+1}", key=f"subj_name_{i}")
-            with cols[1]:
-                sem1_col = st.selectbox(f"Kolonii Sem 1 ({s_name_input}):", all_columns, key=f"sem1_col_{i}")
-            with cols[2]:
-                sem2_col = st.selectbox(f"Kolonii Sem 2 ({s_name_input}):", all_columns, key=f"sem2_col_{i}")
+        if student_list:
+            selected_rep_student = st.selectbox("Barataa Waraqaa Ragaa (Report Card) isaaf qopheessuuf barbaaddu filadhu:", student_list, key="report_select")
             
-            subject_mapping.append({"subject": s_name_input, "sem1_col": sem1_col, "sem2_col": sem2_col})
-
-        if selected_rep_student:
-            s_row = df[df[name_col] == selected_rep_student].iloc[0]
-            s_name = s_row[name_col]
-            s_gender = s_row[gender_col]
+            st.markdown("### ⚙️ Qindaa'ina Gosa Barnootaa, Qabxii Sem 1 fi Sem 2")
+            num_subjects = st.number_input("Baay'ina Gosa Barnootaa (Number of Subjects):", min_value=1, max_value=15, value=5, step=1)
             
-            col_rc1, col_rc2 = st.columns(2)
-            with col_rc1:
-                student_conduct = st.selectbox("Amala Barataa (Conduct):", ["Baayyee Gaarii (Very Good)", "Gaarii (Good)", "Giddu-galeessa (Satisfactory)", "Fooyya'uu qaba (Needs Improvement)"])
-            with col_rc2:
-                days_absent = st.number_input("Guyyaa Haftee (Days Absent):", min_value=0, value=0)
-
-            # Calculations for each subject and overall averages
-            subjects_html = ""
-            sem1_totals = []
-            sem2_totals = []
-            annual_averages = []
-
-            for item in subject_mapping:
-                val1 = pd.to_numeric(s_row[item["sem1_col"]], errors='coerce')
-                val2 = pd.to_numeric(s_row[item["sem2_col"]], errors='coerce')
+            subject_mapping = []
+            for i in range(int(num_subjects)):
+                cols = st.columns(3)
+                with cols[0]:
+                    s_name_input = st.text_input(f"Maqaa Gosa Barnootaa {i+1}:", value=f"Barnoota {i+1}", key=f"subj_name_{i}")
+                with cols[1]:
+                    sem1_col = st.selectbox(f"Kolonii Sem 1 ({s_name_input}):", all_columns, key=f"sem1_col_{i}")
+                with cols[2]:
+                    sem2_col = st.selectbox(f"Kolonii Sem 2 ({s_name_input}):", all_columns, key=f"sem2_col_{i}")
                 
-                v1_clean = val1 if not pd.isna(val1) else 0.0
-                v2_clean = val2 if not pd.isna(val2) else 0.0
-                
-                avg_score = (v1_clean + v2_clean) / 2.0
-                
-                sem1_totals.append(v1_clean)
-                sem2_totals.append(v2_clean)
-                annual_averages.append(avg_score)
-                
-                # Remark based on average score
-                if avg_score >= 80:
-                    remark = "Baayyee Gaarii (Very Good)"
-                elif avg_score >= 50:
-                    remark = "Gaarii (Good)"
-                else:
-                    remark = "Fooyya'uu Qaba"
+                subject_mapping.append({"subject": s_name_input, "sem1_col": sem1_col, "sem2_col": sem2_col})
 
-                subjects_html += f"""
-                <tr>
-                    <td><b>{item['subject']}</b></td>
-                    <td>{v1_clean:.1f}</td>
-                    <td>{v2_clean:.1f}</td>
-                    <td><b>{avg_score:.1f}</b></td>
-                    <td>{remark}</td>
-                </tr>
-                """
+            if selected_rep_student:
+                rep_sub = df[df[name_col].astype(str) == selected_rep_student]
+                if not rep_sub.empty:
+                    s_row = rep_sub.iloc[0]
+                    s_name = s_row[name_col]
+                    s_gender = s_row[gender_col]
+                    
+                    col_rc1, col_rc2 = st.columns(2)
+                    with col_rc1:
+                        student_conduct = st.selectbox("Amala Barataa (Conduct):", ["Baayyee Gaarii (Very Good)", "Gaarii (Good)", "Giddu-galeessa (Satisfactory)", "Fooyya'uu qaba (Needs Improvement)"])
+                    with col_rc2:
+                        days_absent = st.number_input("Guyyaa Haftee (Days Absent):", min_value=0, value=0)
 
-            overall_sem1_avg = sum(sem1_totals) / len(sem1_totals) if sem1_totals else 0
-            overall_sem2_avg = sum(sem2_totals) / len(sem2_totals) if sem2_totals else 0
-            overall_annual_avg = sum(annual_averages) / len(annual_averages) if annual_averages else 0
+                    subjects_html = ""
+                    sem1_totals = []
+                    sem2_totals = []
+                    annual_averages = []
 
-            # Calculate rank for all students based on mapped columns annual average
-            all_student_avgs = []
-            for student in student_list:
-                st_row_data = df[df[name_col] == student].iloc[0]
-                st_avgs = []
-                for item in subject_mapping:
-                    v1 = pd.to_numeric(st_row_data[item["sem1_col"]], errors='coerce')
-                    v2 = pd.to_numeric(st_row_data[item["sem2_col"]], errors='coerce')
-                    v1c = v1 if not pd.isna(v1) else 0.0
-                    v2c = v2 if not pd.isna(v2) else 0.0
-                    st_avgs.append((v1c + v2c) / 2.0)
-                mean_st_avg = sum(st_avgs) / len(st_avgs) if st_avgs else 0
-                all_student_avgs.append({"student": student, "avg": mean_st_avg})
+                    for item in subject_mapping:
+                        val1 = pd.to_numeric(s_row[item["sem1_col"]], errors='coerce')
+                        val2 = pd.to_numeric(s_row[item["sem2_col"]], errors='coerce')
+                        
+                        v1_clean = val1 if not pd.isna(val1) else 0.0
+                        v2_clean = val2 if not pd.isna(val2) else 0.0
+                        
+                        avg_score = (v1_clean + v2_clean) / 2.0
+                        
+                        sem1_totals.append(v1_clean)
+                        sem2_totals.append(v2_clean)
+                        annual_averages.append(avg_score)
+                        
+                        if avg_score >= 80:
+                            remark = "Baayyee Gaarii (Very Good)"
+                        elif avg_score >= 50:
+                            remark = "Gaarii (Good)"
+                        else:
+                            remark = "Fooyya'uu Qaba"
 
-            rank_df = pd.DataFrame(all_student_avgs)
-            rank_df['Rank'] = rank_df['avg'].rank(ascending=False, method='min').astype(int)
-            curr_rank = rank_df[rank_df['student'] == selected_rep_student]['Rank'].values[0] if not rank_df.empty else 1
-
-            report_html = f"""
-            <!DOCTYPE html>
-            <html>
-            <head>
-                <style>
-                    body {{ font-family: Arial, sans-serif; margin: 0; padding: 10px; background: #f9f9f9; }}
-                    .report-card {{
-                        width: 100%;
-                        max-width: 700px;
-                        margin: auto;
-                        border: 3px solid #1b5e20;
-                        border-radius: 10px;
-                        padding: 20px;
-                        background: #ffffff;
-                        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-                    }}
-                    .header {{ text-align: center; color: #1b5e20; margin-bottom: 10px; }}
-                    .header h2 {{ margin: 0; font-size: 19px; }}
-                    .header h3 {{ margin: 5px 0; font-size: 15px; color: #2e7d32; }}
-                    .header p {{ margin: 2px 0; font-size: 12px; color: #555; }}
-                    .student-info {{
-                        display: flex;
-                        justify-content: space-between;
-                        background: #e8f5e9;
-                        padding: 10px;
-                        border-radius: 6px;
-                        font-size: 14px;
-                        margin-bottom: 15px;
-                    }}
-                    table {{ width: 100%; border-collapse: collapse; margin-bottom: 15px; }}
-                    th, td {{ border: 1px solid #c8e6c9; padding: 8px; text-align: center; font-size: 13px; }}
-                    th {{ background-color: #2e7d32; color: white; }}
-                    td:first-child {{ text-align: left; }}
-                    .summary-box {{
-                        background: #f1f8e9;
-                        padding: 10px;
-                        border-radius: 6px;
-                        font-size: 14px;
-                        margin-bottom: 15px;
-                    }}
-                    .footer-note {{
-                        display: flex;
-                        justify-content: space-between;
-                        font-size: 13px;
-                        margin-top: 25px;
-                        border-top: 1px dashed #aaa;
-                        padding-top: 10px;
-                    }}
-                </style>
-            </head>
-            <body>
-                <div class="report-card">
-                    <div class="header">
-                        <h2>🏫 {school_name_input}</h2>
-                        <h3>Waraqaa Ragaa Barataa (Student Report Card)</h3>
-                        <p>Semisteera 1ffaa & 2ffaa</p>
-                    </div>
-                    <hr style="border: 1px solid #1b5e20;">
-                    <div class="student-info">
-                        <div><b>Maqaa Barataa:</b> {s_name}</div>
-                        <div><b>Saala:</b> {s_gender}</div>
-                    </div>
-                    <table>
+                        subjects_html += f"""
                         <tr>
-                            <th>Gosa Barnootaa</th>
-                            <th>Sem 1 (1st)</th>
-                            <th>Sem 2 (2nd)</th>
-                            <th>Avireejii</th>
-                            <th>Yaada (Remark)</th>
+                            <td><b>{item['subject']}</b></td>
+                            <td>{v1_clean:.1f}</td>
+                            <td>{v2_clean:.1f}</td>
+                            <td><b>{avg_score:.1f}</b></td>
+                            <td>{remark}</td>
                         </tr>
-                        {subjects_html}
-                    </table>
-                    <div class="summary-box">
-                        <div><b>📊 Avireejii Semisteera 1ffaa:</b> {overall_sem1_avg:.2f}%</div>
-                        <div><b>📊 Avireejii Semisteera 2ffaa:</b> {overall_sem2_avg:.2f}%</div>
-                        <div><b>📈 Avireejii Waliigalaa (Annual Average):</b> {overall_annual_avg:.2f}%</div>
-                        <div><b>🏆 Sadarkaa (Rank):</b> {curr_rank} / {len(student_list)}</div>
-                        <div><b>⭐ Amala (Conduct):</b> {student_conduct}</div>
-                        <div><b>📅 Guyyaa Haftee (Days Absent):</b> {days_absent}</div>
-                    </div>
-                    <div class="footer-note">
-                        <div>Mallattoo Barsiisaa Daree: ____________</div>
-                        <div>Mallattoo Bulchiinsaa: ____________</div>
-                    </div>
-                </div>
-            </body>
-            </html>
-            """
-            
-            st.components.v1.html(report_html, height=580, scrolling=True)
-            
-            st.download_button(
-                label=f"📥 Waraqaa Ragaa {s_name} Buusuu (Download Report Card HTML)",
-                data=report_html.encode('utf-8'),
-                file_name=f"ReportCard_{s_name}.html",
-                mime="text/html",
-                key="download_report_btn"
-            )
+                        """
+
+                    overall_sem1_avg = sum(sem1_totals) / len(sem1_totals) if sem1_totals else 0
+                    overall_sem2_avg = sum(sem2_totals) / len(sem2_totals) if sem2_totals else 0
+                    overall_annual_avg = sum(annual_averages) / len(annual_averages) if annual_averages else 0
+
+                    all_student_avgs = []
+                    for student in student_list:
+                        st_sub = df[df[name_col].astype(str) == student]
+                        if not st_sub.empty:
+                            st_row_data = st_sub.iloc[0]
+                            st_avgs = []
+                            for item in subject_mapping:
+                                v1 = pd.to_numeric(st_row_data[item["sem1_col"]], errors='coerce')
+                                v2 = pd.to_numeric(st_row_data[item["sem2_col"]], errors='coerce')
+                                v1c = v1 if not pd.isna(v1) else 0.0
+                                v2c = v2 if not pd.isna(v2) else 0.0
+                                st_avgs.append((v1c + v2c) / 2.0)
+                            mean_st_avg = sum(st_avgs) / len(st_avgs) if st_avgs else 0
+                            all_student_avgs.append({"student": student, "avg": mean_st_avg})
+
+                    if all_student_avgs:
+                        rank_df = pd.DataFrame(all_student_avgs)
+                        rank_df['Rank'] = rank_df['avg'].rank(ascending=False, method='min').astype(int)
+                        matched_rank = rank_df[rank_df['student'] == selected_rep_student]['Rank']
+                        curr_rank = matched_rank.values[0] if not matched_rank.empty else 1
+                    else:
+                        curr_rank = 1
+
+                    report_html = f"""
+                    <!DOCTYPE html>
+                    <html>
+                    <head>
+                        <style>
+                            body {{ font-family: Arial, sans-serif; margin: 0; padding: 10px; background: #f9f9f9; }}
+                            .report-card {{
+                                width: 100%;
+                                max-width: 700px;
+                                margin: auto;
+                                border: 3px solid #1b5e20;
+                                border-radius: 10px;
+                                padding: 20px;
+                                background: #ffffff;
+                                box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+                            }}
+                            .header {{ text-align: center; color: #1b5e20; margin-bottom: 10px; }}
+                            .header h2 {{ margin: 0; font-size: 19px; }}
+                            .header h3 {{ margin: 5px 0; font-size: 15px; color: #2e7d32; }}
+                            .header p {{ margin: 2px 0; font-size: 12px; color: #555; }}
+                            .student-info {{
+                                display: flex;
+                                justifyContent: space-between;
+                                background: #e8f5e9;
+                                padding: 10px;
+                                border-radius: 6px;
+                                font-size: 14px;
+                                margin-bottom: 15px;
+                            }}
+                            table {{ width: 100%; border-collapse: collapse; margin-bottom: 15px; }}
+                            th, td {{ border: 1px solid #c8e6c9; padding: 8px; text-align: center; font-size: 13px; }}
+                            th {{ background-color: #2e7d32; color: white; }}
+                            td:first-child {{ text-align: left; }}
+                            .summary-box {{
+                                background: #f1f8e9;
+                                padding: 10px;
+                                border-radius: 6px;
+                                font-size: 14px;
+                                margin-bottom: 15px;
+                            }}
+                            .footer-note {{
+                                display: flex;
+                                justifyContent: space-between;
+                                font-size: 13px;
+                                margin-top: 25px;
+                                border-top: 1px dashed #aaa;
+                                padding-top: 10px;
+                            }}
+                        </style>
+                    </head>
+                    <body>
+                        <div class="report-card">
+                            <div class="header">
+                                <h2>🏫 {school_name_input}</h2>
+                                <h3>Waraqaa Ragaa Barataa (Student Report Card)</h3>
+                                <p>Semisteera 1ffaa & 2ffaa</p>
+                            </div>
+                            <hr style="border: 1px solid #1b5e20;">
+                            <div class="student-info" style="display:flex; justify-content:space-between;">
+                                <div><b>Maqaa Barataa:</b> {s_name}</div>
+                                <div><b>Saala:</b> {s_gender}</div>
+                            </div>
+                            <table>
+                                <tr>
+                                    <th>Gosa Barnootaa</th>
+                                    <th>Sem 1 (1st)</th>
+                                    <th>Sem 2 (2nd)</th>
+                                    <th>Avireejii</th>
+                                    <th>Yaada (Remark)</th>
+                                </tr>
+                                {subjects_html}
+                            </table>
+                            <div class="summary-box">
+                                <div><b>📊 Avireejii Semisteera 1ffaa:</b> {overall_sem1_avg:.2f}%</div>
+                                <div><b>📊 Avireejii Semisteera 2ffaa:</b> {overall_sem2_avg:.2f}%</div>
+                                <div><b>📈 Avireejii Waliigalaa (Annual Average):</b> {overall_annual_avg:.2f}%</div>
+                                <div><b>🏆 Sadarkaa (Rank):</b> {curr_rank} / {len(student_list)}</div>
+                                <div><b>⭐ Amala (Conduct):</b> {student_conduct}</div>
+                                <div><b>📅 Guyyaa Haftee (Days Absent):</b> {days_absent}</div>
+                            </div>
+                            <div class="footer-note" style="display:flex; justify-content:space-between;">
+                                <div>Mallattoo Barsiisaa Daree: ____________</div>
+                                <div>Mallattoo Bulchiinsaa: ____________</div>
+                            </div>
+                        </div>
+                    </body>
+                    </html>
+                    """
+                    
+                    st.components.v1.html(report_html, height=580, scrolling=True)
+                    
+                    st.download_button(
+                        label=f"📥 Waraqaa Ragaa {s_name} Buusuu (Download Report Card HTML)",
+                        data=report_html.encode('utf-8'),
+                        file_name=f"ReportCard_{s_name}.html",
+                        mime="text/html",
+                        key="download_report_btn"
+                    )
 
 # Footer
 st.markdown("---")
