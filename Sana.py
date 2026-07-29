@@ -51,13 +51,13 @@ st.sidebar.write(
 
 # Sidebar - Qajeelfama Itti Fayyadamaa
 st.sidebar.markdown("---")
-st.sidebar.subheader("📖 Qajeelfama Itti Fayyadamaa")
+st.sidebar.subheader("📖 Qajeelfama Itti Fayyadamaa Appichaa")
 st.sidebar.markdown(
     """
-1. **Madda Ragaa:** Faayilii haaraa (Excel/CSV/Suuraa) fe'uu ykn ragaa kanaan dura kuufame (Saved) filachuun dursa galchuu.
+1. **Madda Ragaa:** Faayilii haaraa  kuusaa qabxii ykn roosteera excell qopha'e galchuun fe'uu ykn ragaa kanaan dura kuufame (Saved) jiru galchuu.
 2. **Kuusuu (Save):** Faayiliin fe'ame akka kuufamuuf buttoon 'Save' xuquu.
-3. **Qindaa'ina:** Column maqaa, saala, fi gosa barnootaa keessatti argamu filadhu.
-4. **Bu'aa Ilaali:** Gosa barnootaan dandeettii barattootaa (Ciccimoo, Giddu-galeeyyii, Suuta baratoo) koorniyaan xiinxalu!
+3. **Qindaa'ina:** Column maqaa barataa, koorniyaa, fi gosa barnootaa keessatti argamu filachuu.
+4. **Bu'aa Ilaali:** Gosa barnootaan dandeettii barattootaa (Ciccimoo, Giddu-galeeyyii, Suuta baratoo) koorniyaan xiinxalame ilaaluu!
 """
 )
 
@@ -71,7 +71,7 @@ st.sidebar.markdown("---")
 st.sidebar.subheader("🗄️ Madda Ragaa Filadhu")
 madda_ragaa = st.sidebar.radio(
     "Filannoo kee:",
-    ["📤 Ragaa Haaraa Fe'uu (Upload)", "📁 Ragaa Kuufame Fayyadamuu (Saved)"]
+    ["📤 Ragaa Haaraa Fe'uu (Upload)", "📁 Ragaa Kuufame Filachuu (Saved)"]
 )
 
 df = None
@@ -82,7 +82,7 @@ image_to_process = None
 # FILANNOO 1: RAGAA HAARAA FE'UU
 # ==========================================
 if madda_ragaa == "📤 Ragaa Haaraa Fe'uu (Upload)":
-    st.subheader("📂 Step 1: Faayilii (Excel/CSV) ykn Suuraa (Image) Fe'aa")
+    st.subheader("📂 Step 1: Faayila (Excel/CSV) ykn Suuraa (Image) Fe'i")
     uploaded_file = st.file_uploader(
         "Faayilii qabxii barattootaa ykn suuraa filadhu", 
         type=["csv", "xlsx", "png", "jpg", "jpeg"]
@@ -100,7 +100,7 @@ if madda_ragaa == "📤 Ragaa Haaraa Fe'uu (Upload)":
 
         if file_extension == 'csv':
             df = pd.read_csv(uploaded_file)
-            st.success("Faayiliin CSV milkaa'inaan fe'ameera!")
+            st.success("Faayiliin kee milkaa'inaan fe'ameera!")
         elif file_extension == 'xlsx':
             xls = pd.ExcelFile(uploaded_file)
             sheet_name = st.selectbox("Sheet Excel filadhu:", xls.sheet_names)
@@ -171,13 +171,13 @@ if image_to_process is not None:
 # GAMAAGGAMA FI QOODINSA QABXII (EXCEL/CSV)
 # ==========================================
 if df is not None:
-    # Step 2 & 3: Qindaa'ina Kolonootaa
-    st.subheader("⚙️ Step 2 & 3: Qindaa'ina Kolonootaa fi Daataa Waliigalaa")
+    # Step 2 & 3: Qindaa'ina kolomanii
+    st.subheader("⚙️ Step 2 & 3: Qindaa'ina Kolomanii fi Daataa Waliigalaa")
     all_columns = df.columns.tolist()
 
     col_a, col_b, col_c = st.columns(3)
     with col_a:
-        name_col = st.selectbox("Kolonii Maqaa Barataa:", all_columns, index=0)
+        name_col = st.selectbox("Kolomanii Maqaa Barataa qabatee jiru:", all_columns, index=0)
     with col_b:
         gender_col = st.selectbox(
             "Kolonii Saala (Gender) - [Fkn: Dhi/Dha ykn M/F]:",
@@ -186,11 +186,11 @@ if df is not None:
         )
     with col_c:
         subject_cols = st.multiselect(
-            "Kolonoota Gosa Barnootaa:",
+            "Kolomanii  Gosa Barnootaa qabatee jiru:",
             [col for col in all_columns if col not in [name_col, gender_col]],
         )
 
-    # 📊 Iddoo Data Preview fi Baay'ina Barattoota Waliigalaa (Summary Metrics)
+    # 📊 Mul'stuu Ragaa fe'ame( Preview) fi Baay'ina Barattoota Waliigalaa (Summary Metrics)
     st.markdown("---")
     st.subheader("👀 Daataa Jalqabaa fi Baay'ina Barattoota Waliigalaa")
     
@@ -209,7 +209,7 @@ if df is not None:
 
     # Quiz Qabxii Gara 100tti jijjiiruu (Scaling option)
     st.markdown("---")
-    use_scaling = st.checkbox("Qabxii Qorannoo Xiqqaa (Fkn: 10 ykn 20) gara 100tti jijjiiruu (Scale to 100%)")
+    use_scaling = st.checkbox("xiinxala battallen (Fkn: 10 ykn 20) gara 100tti jijjiiruu (Scale to 100%)")
     max_score_input = 100
     if use_scaling:
         max_score_input = st.number_input(
@@ -220,7 +220,7 @@ if df is not None:
 
     if subject_cols and name_col and gender_col:
         st.markdown("---")
-        st.subheader("🔍 Step 4: Barbaacha (Search) fi Qoodinsa Gosa Barnootaan")
+        st.subheader("🔍 Step 4: Barbaacha Ragaa barataa Dhuunfaa(search)")
 
         # Search Bar
         search_query = st.text_input("🔍 Maqaa Barataa Barbaadi (Barbaachaaf asitti barreessi):")
@@ -254,8 +254,8 @@ if df is not None:
                 (temp_df["Calculated_Score"] < 50) & (temp_df["Calculated_Score"].notna())
             ]
             
-            # Barattoota qoraman (Ciccimoo + Giddu-galeeyyii + Suuta barattoota)
-            qoraman_df = pd.concat([ciccimoo, giddu, suuta])
+            # Barattoota qoraman (Ciccimoo + Giddu-galeeyyii + Suuta baratoo)
+            qoraman_df = pd.concat([ciccimoo, giddu galeeyyii, suuta baratoo])
             
             # Barattoota qabxii hin qabne (None / Absent / Missing)
             none_df = temp_df[temp_df["Calculated_Score"].isna()]
@@ -271,7 +271,7 @@ if df is not None:
             waliigala_none = dhiira_none + dhalaa_none
 
             # Agarsiisuu Baay'ina Qoraman fi Galmaa'an Gosa Barnoota Kanaan
-            st.info(f"📊 **Istaatistikaa Gosa Barnootaa Kanaa ({subj}):**\n"
+            st.info(f"📊 **Xiinxala Gosa Barnootaa Kanaa ({subj}):**\n"
                     f"- **Waliigala Barattoota Qoraman:** {waliigala_qoraman} (👦 Dhiira: {dhiira_qoraman} | 👧 Dhalaa: {dhalaa_qoraman})\n"
                     f"- **Barattoota Qabxii Hin Qabne (None/Absent):** {waliigala_none} (👦 Dhiira: {dhiira_none} | 👧 Dhalaa: {dhalaa_none})\n"
                     f"- **Waliigala Galmaa'an (Qoraman + None):** {waliigala_qoraman + waliigala_none}")
@@ -297,7 +297,7 @@ if df is not None:
                     st.dataframe(giddu[display_cols], use_container_width=True, hide_index=True)
 
             with col3:
-                st.metric(label="⚠️ Suuta Barattoota (< 50%)", value=f"{len(suuta)} Barattoota")
+                st.metric(label="⚠️ Suuta Baratoo (< 50%)", value=f"{len(suuta)} Baratoo")
                 if not suuta.empty:
                     dhiira_s = len(suuta[suuta[gender_col].astype(str).str.contains("Dhi|M", case=False)])
                     dhalaa_s = len(suuta[suuta[gender_col].astype(str).str.contains("Dha|F", case=False)])
@@ -312,6 +312,6 @@ else:
 # Footer
 st.markdown("---")
 st.markdown(
-    "<p style='text-align: center; color: gray;'>Created with ❤️ by KN (Kitesa Negasa) | Educational Analytics App</p>",
+    "<p style='text-align: center; color: gray;'>Created with ❤️ by Kitesa Negasa | Educational Analytics App</p>",
     unsafe_allow_html=True,
 )
