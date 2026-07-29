@@ -142,13 +142,11 @@ if df is not None:
     st.subheader("⚙️ Step 2 & 3: Qindaa'ina Kolomanii fi Daataa Waliigalaa")
     all_columns = df.columns.tolist()
 
-    col_a, col_b, col_c = st.columns(3)
+    col_a, col_b = st.columns(2)
     with col_a:
         name_col = st.selectbox("Kolomanii Maqaa Barataa qabatee jiru:", all_columns, index=0)
     with col_b:
         gender_col = st.selectbox("Kolonii Saala (Gender):", all_columns, index=1 if len(all_columns) > 1 else 0)
-    with col_c:
-        subject_cols = st.multiselect("Kolomanii Gosa Barnootaa Waliigalaa qabatee jiru:", [col for col in all_columns if col not in [name_col, gender_col]])
 
     st.markdown("---")
     st.subheader("👀 Daataa Jalqabaa fi Baay'ina Barattoota Waliigalaa")
@@ -164,7 +162,7 @@ if df is not None:
 
     st.dataframe(df.head(), use_container_width=True)
 
-    if subject_cols and name_col and gender_col:
+    if name_col and gender_col:
         
         # ==========================================
         # 1. WARAQAA EENYUMMAA BARATAA (STUDENT ID CARD)
@@ -246,15 +244,30 @@ if df is not None:
             )
 
         # ==========================================
-        # 2. WARAQAA RAGAA BARATAA GUUTUU (FULL REPORT CARD)
+        # 2. WARAQAA RAGAA BARATAA (REPORT CARD)
         # ==========================================
         st.markdown("---")
-        st.subheader("📋 Waraqaa Ragaa Barataa Guutuu (Full Report Card - Sem 1 & Sem 2)")
+        st.subheader("📋 Waraqaa Ragaa Barataa Guutuu (Report Card - Sem 1 & Sem 2)")
         
         school_name_input = st.text_input("Maqaa Mana Barumsaa (School Name):", value="Mane Barumsaa Sadarkaa 1ffaa & 2ffaa TRIAD")
-        
         selected_rep_student = st.selectbox("Barataa Waraqaa Ragaa (Report Card) isaaf qopheessuuf barbaaddu filadhu:", student_list, key="report_select")
         
+        # Subject mapping setup for Sem 1 and Sem 2 columns
+        st.markdown("### ⚙️ Qindaa'ina Gosa Barnootaa, Qabxii Sem 1 fi Sem 2")
+        num_subjects = st.number_input("Baay'ina Gosa Barnootaa (Number of Subjects):", min_value=1, max_value=15, value=5, step=1)
+        
+        subject_mapping = []
+        for i in range(int(num_subjects)):
+            cols = st.columns(3)
+            with cols[0]:
+                s_name_input = st.text_input(f"Maqaa Gosa Barnootaa {i+1}:", value=f"Barnoota {i+1}", key=f"subj_name_{i}")
+            with cols[1]:
+                sem1_col = st.selectbox(f"Kolonii Sem 1 ({s_name_input}):", all_columns, key=f"sem1_col_{i}")
+            with cols[2]:
+                sem2_col = st.selectbox(f"Kolonii Sem 2 ({s_name_input}):", all_columns, key=f"sem2_col_{i}")
+            
+            subject_mapping.append({"subject": s_name_input, "sem1_col": sem1_col, "sem2_col": sem2_col})
+
         if selected_rep_student:
             s_row = df[df[name_col] == selected_rep_student].iloc[0]
             s_name = s_row[name_col]
@@ -266,48 +279,64 @@ if df is not None:
             with col_rc2:
                 days_absent = st.number_input("Guyyaa Haftee (Days Absent):", min_value=0, value=0)
 
-            # Kolomii Semisteera 1ffaa fi 2ffaa adda baasuu ykn herreguu
-            st.markdown("### ⚙️ Qindaa'ina Qabxii Semisteera 1ffaa fi 2ffaa")
-            col_sem1, col_sem2 = st.columns(2)
-            with col_sem1:
-                sem1_cols = st.multiselect("Kolomanii Qabxii Semisteera 1ffaa (Sem 1 Subjects):", subject_cols, default=subject_cols[:len(subject_cols)//2] if len(subject_cols)>1 else subject_cols)
-            with col_sem2:
-                sem2_cols = st.multiselect("Kolomanii Qabxii Semisteera 2ffaa (Sem 2 Subjects):", subject_cols, default=subject_cols[len(subject_cols)//2:] if len(subject_cols)>1 else subject_cols)
-
-            # Herrega Semisteera 1ffaa, 2ffaa, Avireejii fi Rank
-            temp_calc_df = df.copy()
-            
-            for sc in subject_cols:
-                temp_calc_df[sc] = pd.to_numeric(temp_calc_df[sc], errors='coerce').fillna(0)
-            
-            if sem1_cols:
-                temp_calc_df['Sem1_Total'] = temp_calc_df[sem1_cols].sum(axis=1)
-                temp_calc_df['Sem1_Avg'] = temp_calc_df[sem1_cols].mean(axis=1)
-            else:
-                temp_calc_df['Sem1_Total'] = 0
-                temp_calc_df['Sem1_Avg'] = 0
-
-            if sem2_cols:
-                temp_calc_df['Sem2_Total'] = temp_calc_df[sem2_cols].sum(axis=1)
-                temp_calc_df['Sem2_Avg'] = temp_calc_df[sem2_cols].mean(axis=1)
-            else:
-                temp_calc_df['Sem2_Total'] = 0
-                temp_calc_df['Sem2_Avg'] = 0
-
-            temp_calc_df['Annual_Avg'] = (temp_calc_df['Sem1_Avg'] + temp_calc_df['Sem2_Avg']) / 2
-            temp_calc_df['Rank'] = temp_calc_df['Annual_Avg'].rank(ascending=False, method='min').astype(int)
-            
-            curr_stat = temp_calc_df[temp_calc_df[name_col] == selected_rep_student].iloc[0]
-            sem1_avg = curr_stat['Sem1_Avg']
-            sem2_avg = curr_stat['Sem2_Avg']
-            annual_avg = curr_stat['Annual_Avg']
-            st_rank = curr_stat['Rank']
-            
-            # Table subjects rows for report card
+            # Calculations for each subject and overall averages
             subjects_html = ""
-            for subj in subject_cols:
-                val = s_row[subj]
-                subjects_html += f"<tr><td>{subj}</td><td>{val}</td><td>100</td><td>Gaarii</td></tr>"
+            sem1_totals = []
+            sem2_totals = []
+            annual_averages = []
+
+            for item in subject_mapping:
+                val1 = pd.to_numeric(s_row[item["sem1_col"]], errors='coerce')
+                val2 = pd.to_numeric(s_row[item["sem2_col"]], errors='coerce')
+                
+                v1_clean = val1 if not pd.isna(val1) else 0.0
+                v2_clean = val2 if not pd.isna(val2) else 0.0
+                
+                avg_score = (v1_clean + v2_clean) / 2.0
+                
+                sem1_totals.append(v1_clean)
+                sem2_totals.append(v2_clean)
+                annual_averages.append(avg_score)
+                
+                # Remark based on average score
+                if avg_score >= 80:
+                    remark = "Baayyee Gaarii (Very Good)"
+                elif avg_score >= 50:
+                    remark = "Gaarii (Good)"
+                else:
+                    remark = "Fooyya'uu Qaba"
+
+                subjects_html += f"""
+                <tr>
+                    <td><b>{item['subject']}</b></td>
+                    <td>{v1_clean:.1f}</td>
+                    <td>{v2_clean:.1f}</td>
+                    <td><b>{avg_score:.1f}</b></td>
+                    <td>{remark}</td>
+                </tr>
+                """
+
+            overall_sem1_avg = sum(sem1_totals) / len(sem1_totals) if sem1_totals else 0
+            overall_sem2_avg = sum(sem2_totals) / len(sem2_totals) if sem2_totals else 0
+            overall_annual_avg = sum(annual_averages) / len(annual_averages) if annual_averages else 0
+
+            # Calculate rank for all students based on mapped columns annual average
+            all_student_avgs = []
+            for student in student_list:
+                st_row_data = df[df[name_col] == student].iloc[0]
+                st_avgs = []
+                for item in subject_mapping:
+                    v1 = pd.to_numeric(st_row_data[item["sem1_col"]], errors='coerce')
+                    v2 = pd.to_numeric(st_row_data[item["sem2_col"]], errors='coerce')
+                    v1c = v1 if not pd.isna(v1) else 0.0
+                    v2c = v2 if not pd.isna(v2) else 0.0
+                    st_avgs.append((v1c + v2c) / 2.0)
+                mean_st_avg = sum(st_avgs) / len(st_avgs) if st_avgs else 0
+                all_student_avgs.append({"student": student, "avg": mean_st_avg})
+
+            rank_df = pd.DataFrame(all_student_avgs)
+            rank_df['Rank'] = rank_df['avg'].rank(ascending=False, method='min').astype(int)
+            curr_rank = rank_df[rank_df['student'] == selected_rep_student]['Rank'].values[0] if not rank_df.empty else 1
 
             report_html = f"""
             <!DOCTYPE html>
@@ -317,7 +346,7 @@ if df is not None:
                     body {{ font-family: Arial, sans-serif; margin: 0; padding: 10px; background: #f9f9f9; }}
                     .report-card {{
                         width: 100%;
-                        max-width: 650px;
+                        max-width: 700px;
                         margin: auto;
                         border: 3px solid #1b5e20;
                         border-radius: 10px;
@@ -339,8 +368,9 @@ if df is not None:
                         margin-bottom: 15px;
                     }}
                     table {{ width: 100%; border-collapse: collapse; margin-bottom: 15px; }}
-                    th, td {{ border: 1px solid #c8e6c9; padding: 8px; text-align: left; font-size: 13px; }}
+                    th, td {{ border: 1px solid #c8e6c9; padding: 8px; text-align: center; font-size: 13px; }}
                     th {{ background-color: #2e7d32; color: white; }}
+                    td:first-child {{ text-align: left; }}
                     .summary-box {{
                         background: #f1f8e9;
                         padding: 10px;
@@ -367,23 +397,24 @@ if df is not None:
                     </div>
                     <hr style="border: 1px solid #1b5e20;">
                     <div class="student-info">
-                        <div><b>Maqaa:</b> {s_name}</div>
+                        <div><b>Maqaa Barataa:</b> {s_name}</div>
                         <div><b>Saala:</b> {s_gender}</div>
                     </div>
                     <table>
                         <tr>
-                            <th>Gosa Barnootaa (Subjects)</th>
-                            <th>Qabxii Argame</th>
-                            <th>Qabxii Waliigalaa</th>
-                            <th>Ibsaa (Remark)</th>
+                            <th>Gosa Barnootaa</th>
+                            <th>Sem 1 (1st)</th>
+                            <th>Sem 2 (2nd)</th>
+                            <th>Avireejii</th>
+                            <th>Yaada (Remark)</th>
                         </tr>
                         {subjects_html}
                     </table>
                     <div class="summary-box">
-                        <div><b>📊 Avireejii Semisteera 1ffaa (1st Semester Average):</b> {sem1_avg:.2f}%</div>
-                        <div><b>📊 Avireejii Semisteera 2ffaa (2nd Semester Average):</b> {sem2_avg:.2f}%</div>
-                        <div><b>📈 Avireejii Waliigalaa / Annual Average:</b> {annual_avg:.2f}%</div>
-                        <div><b>🏆 Sadarkaa (Rank):</b> {st_rank} / {len(df)}</div>
+                        <div><b>📊 Avireejii Semisteera 1ffaa:</b> {overall_sem1_avg:.2f}%</div>
+                        <div><b>📊 Avireejii Semisteera 2ffaa:</b> {overall_sem2_avg:.2f}%</div>
+                        <div><b>📈 Avireejii Waliigalaa (Annual Average):</b> {overall_annual_avg:.2f}%</div>
+                        <div><b>🏆 Sadarkaa (Rank):</b> {curr_rank} / {len(student_list)}</div>
                         <div><b>⭐ Amala (Conduct):</b> {student_conduct}</div>
                         <div><b>📅 Guyyaa Haftee (Days Absent):</b> {days_absent}</div>
                     </div>
@@ -396,7 +427,7 @@ if df is not None:
             </html>
             """
             
-            st.components.v1.html(report_html, height=560, scrolling=True)
+            st.components.v1.html(report_html, height=580, scrolling=True)
             
             st.download_button(
                 label=f"📥 Waraqaa Ragaa {s_name} Buusuu (Download Report Card HTML)",
