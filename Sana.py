@@ -252,23 +252,17 @@ if df is not None:
                 (temp_df["Calculated_Score"] < 50) & (temp_df["Calculated_Score"].notna())
             ]
             
-            # Barattoota qoraman (Ciccimoo + Giddu-galeeyyii + Suuta barattoota)
             qoraman_df = pd.concat([ciccimoo, giddu, suuta])
-            
-            # Barattoota qabxii hin qabne (None / Absent / Missing)
             none_df = temp_df[temp_df["Calculated_Score"].isna()]
 
-            # Baay'ina waligalaa barattoota qoraman (Dhiira + Dhalaa)
             dhiira_qoraman = len(qoraman_df[qoraman_df[gender_col].astype(str).str.contains("Dhi|M", case=False)])
             dhalaa_qoraman = len(qoraman_df[qoraman_df[gender_col].astype(str).str.contains("Dha|F", case=False)])
             waliigala_qoraman = dhiira_qoraman + dhalaa_qoraman
 
-            # Baay'ina barattoota None ta'an
             dhiira_none = len(none_df[none_df[gender_col].astype(str).str.contains("Dhi|M", case=False)])
             dhalaa_none = len(none_df[none_df[gender_col].astype(str).str.contains("Dha|F", case=False)])
             waliigala_none = dhiira_none + dhalaa_none
 
-            # Agarsiisuu Baay'ina Qoraman fi Galmaa'an Gosa Barnoota Kanaan
             st.info(f"📊 **Xiinxala Gosa Barnootaa Kanaa ({subj}):**\n"
                     f"- **Waliigala Barattoota Qoraman:** {waliigala_qoraman} (👦 Dhiira: {dhiira_qoraman} | 👧 Dhalaa: {dhalaa_qoraman})\n"
                     f"- **Barattoota Qabxii Hin Qabne (None/Absent):** {waliigala_none} (👦 Dhiira: {dhiira_none} | 👧 Dhalaa: {dhalaa_none})\n"
@@ -302,9 +296,6 @@ if df is not None:
                     st.caption(f"👥 Dhiira: {dhiira_s} | Dhalaa: {dhalaa_s}")
                     st.dataframe(suuta[display_cols], use_container_width=True, hide_index=True)
 
-            # ==========================================
-            # KALLATTIIN PRINT GODHUUF (PRINT / EXPORT FEATURE)
-            # ==========================================
             st.markdown(f"### 🖨️ Barattoota Gosa Barnootaa **{subj}** Maxansiisuuf (Print)")
             
             print_category = st.selectbox(
@@ -313,7 +304,6 @@ if df is not None:
                 key=f"print_select_{subj}"
             )
 
-            # Akkaataa filannootti DataFrame qopheessuu
             if print_category == "Ciccimoo (≥ 80%)":
                 export_df = ciccimoo[display_cols]
                 title_text = f"Barattoota Ciccimoo Gosa Barnootaa {subj}"
@@ -327,7 +317,6 @@ if df is not None:
                 export_df = qoraman_df[display_cols]
                 title_text = f"Barattoota Qoraman Hunda Gosa Barnootaa {subj}"
 
-            # CSV file godhanii buusuun akkasumas Button Print Browser fayyadamuun ni danda'ama
             if not export_df.empty:
                 csv_data = export_df.to_csv(index=False).encode('utf-8')
                 st.download_button(
@@ -338,7 +327,6 @@ if df is not None:
                     key=f"download_{subj}"
                 )
 
-                # HTML fi JavaScript fayyadamuun kallattiin Browser irraa Print akka godhamu
                 html_table = export_df.to_html(classes='table table-striped', index=False)
                 print_html = f"""
                 <html>
@@ -362,7 +350,6 @@ if df is not None:
                 </html>
                 """
                 
-                # Button Print Kallattii
                 st.components.v1.html(
                     f"""
                     <script>
@@ -384,6 +371,89 @@ if df is not None:
 
             st.markdown("---")
 
+    # ==========================================
+    # KAARDII BARATAA QOPHEESSUU (STUDENT ID CARD)
+    # ==========================================
+    st.markdown("---")
+    st.subheader("🪪 Kaardii Barataa Qopheessuu (Student ID Card Generator)")
+    
+    student_list = df[name_col].unique().tolist() if name_col in df.columns else []
+    if student_list:
+        selected_student = st.selectbox("Barataa Kaardii isaaf qopheessuuf barbaaddu filadhu:", student_list)
+        
+        if selected_student:
+            student_data = df[df[name_col] == selected_student].iloc[0]
+            s_name = student_data[name_col]
+            s_gender = student_data[gender_col] if gender_col in df.columns else "N/A"
+            
+            # Kaardii HTML Template
+            card_html = f"""
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <style>
+                    .card {{
+                        width: 350px;
+                        border: 2px solid #2e7d32;
+                        border-radius: 12px;
+                        padding: 20px;
+                        font-family: Arial, sans-serif;
+                        background: #ffffff;
+                        box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+                        text-align: center;
+                        margin: auto;
+                    }}
+                    .school-title {{
+                        font-size: 18px;
+                        font-weight: bold;
+                        color: #1b5e20;
+                    }}
+                    .card-header {{
+                        font-size: 13px;
+                        color: #555;
+                        margin-bottom: 10px;
+                    }}
+                    .student-info {{
+                        text-align: left;
+                        font-size: 15px;
+                        margin: 10px 0;
+                        padding: 5px;
+                        background: #f1f8e9;
+                        border-radius: 4px;
+                    }}
+                    .footer {{
+                        margin-top: 15px;
+                        font-size: 11px;
+                        color: #777;
+                        border-top: 1px solid #ddd;
+                        padding-top: 8px;
+                    }}
+                </style>
+            </head>
+            <body>
+                <div class="card">
+                    <div class="school-title">🏫 TRIAD APP SCHOOL</div>
+                    <div class="card-header">Kaardii Eenyummaa Barataa (Student ID Card)</div>
+                    <hr>
+                    <div class="student-info"><b>Maqaa:</b> {s_name}</div>
+                    <div class="student-info"><b>Saala:</b> {s_gender}</div>
+                    <div class="student-info"><b>Daree:</b> Barataa/tuu Qormaataa</div>
+                    <div class="footer">Designed & Developed by Kitesa Negasa</div>
+                </div>
+            </body>
+            </html>
+            """
+            
+            # Agarsiisuu Kaardichaa
+            st.components.v1.html(card_html, height=260)
+            
+            # Download Button for Student Card
+            st.download_button(
+                label=f"📥 Kaardii {s_name} Buusuu (Download Card HTML)",
+                data=card_html.encode('utf-8'),
+                file_name=f"Kaardii_{s_name}.html",
+                mime="text/html"
+            )
 else:
     st.info("Maaloo jalqabaaf faayilii kee (Excel, CSV) ykn Suuraa (PNG/JPG) fe'i, ykn ragaa kanaan dura kuufame filadhu.")
 
