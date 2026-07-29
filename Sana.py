@@ -106,30 +106,8 @@ else:
 st.sidebar.markdown("### 📝 Seensa (Introduction)")
 st.sidebar.write(
     "Barnoonni bu'uura misoomaa fi guddina hawaasaati. Sadarkaa amma irra jirruutti, saffisi fi qulqullinni barnootaa akka fooyya’uuf tooftaa ammayyaa’aa fayyadamuun dirqama ta’a. Akkaataa kanaan, rakkoolee qormaataa fi madaallii barattootaa keessatti mul’atan hiikuuf, akkasumas barsiisotaaf qorannoo dandeettii saffisaa (Diagnostic Assessment) kennuuf appilikeeshinii haaraa maqaan isaa TRIAD (Tracking Rates In Academic Development) jedhamu qopheesseera. Appiin kun sadarkaa mana barumsaa Aanaa Meettaa Walqixxeetti qulqullina barnootaa mirkaneessuuf shoora olaanaa qaba., "
-    "Hiika Gabajee TRIAD (Acronym Meaning)
-Manni abbummaa fi ergaan appilikeeshinii kanaa hiika gabajee armaan gadii qaba:
-
-T - Tracking (Hordofuu)
-
-R - Rates (Sadarkaalee / Safartuu)
-
-I - In (Keessatti)
-
-A - Academic (Barnootaa / Akkaadaamii)
-
-D - Development (Guddina / Misooma)
-
-Ergaan Waliigalaa: "Guddina Akkaadaamii Barattootaa Sadarkaan Hordofuu."
-
-1.2 Haguuggaa Tajaajilaa (Scope of Education Levels)
-Appilikeeshiniin TRIAD kun sadarkaalee barnootaa gurguddoo fi sadarkaa hundatti tajaajiluu kan danda’uun dizaayini kan ta'eedha. Kunis:
-
-Manneen barnootaa sadarkaa 1ffaan dura (Pre-primary / Kindergartens)
-
-Manneen barnootaa sadarkaa 1ffaa (Kutaa 1 – 6)
-
-Manneen barnootaa sadarkaa giddu-galeessaa (Kutaa 7 – 8)
-
+    "Hiika Gabajee TRIAD (Acronym Meaning)Manni abbummaa fi ergaan appilikeeshinii kanaa hiika gabajee armaan gadii qaba:T - Tracking (Hordofuu),R - Rates (Sadarkaalee / Safartuu),I - In (Keessatti),A - Academic (Barnootaa / Akkaadaamii)D - Development (Guddina / Misooma) Waliigalaatti TRIAD: "Guddina Akkaadaamii Barattootaa Sadarkaan Hordofuu."
+Appilikeeshiniin TRIAD kun sadarkaalee barnootaa gurguddoo fi sadarkaa hundatti tajaajiluu kan danda’uun dizaayini kan ta'eedha. Kunis:Manneen barnootaa sadarkaa 1ffaan dura (Pre-primary / Kindergartens)Manneen barnootaa sadarkaa 1ffaa (Kutaa 1 – 6)Manneen barnootaa sadarkaa giddu-galeessaa (Kutaa 7 – 8)
 Manneen barnootaa sadarkaa 2ffaa (Kutaa 9 – 12) keessatti milkaa’inaan hojjechuu ni danda’a.."
 )
 
