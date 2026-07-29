@@ -336,9 +336,17 @@ if df is not None:
     st.markdown("---")
     st.subheader("🪪 Kaardii Eenyummaa Barataa Qopheessuu (Student ID Card)")
     
-    school_name_input = st.text_input("Maqaa Mana Barumsaa (School Name General):", "MANA BARUMSAA SADARKAA 2FFAA", key="school_name_general_input")
-    
-    student_list = df[name_col].unique().tolist() if name_col in df.columns else []
+    # Maqaa Mana Barumsaa, Barataa, Kutaa, fi Daree Kallattiidhaan Kaardiin Olitti Akka Galchitu Qindaa'e (Columns 4)
+    card_top_col1, card_top_col2, card_top_col3, card_top_col4 = st.columns(4)
+    with card_top_col1:
+        school_name_input = st.text_input("Maqaa Mana Barumsaa:", "MANA BARUMSAA SADARKAA 2FFAA", key="school_name_general_input")
+    with card_top_col2:
+        student_list = df[name_col].unique().tolist() if name_col in df.columns else []
+        selected_student = st.selectbox("Barataa:", student_list if student_list else [""], key="id_card_student_select")
+    with card_top_col3:
+        manual_grade = st.text_input("Kutaa (Grade):", value="", placeholder="Fkn: 9", key="manual_grade_input")
+    with card_top_col4:
+        manual_section = st.text_input("Daree (Section):", value="", placeholder="Fkn: A", key="manual_section_input")
     
     uploaded_student_photo = st.file_uploader("🖼️ Suuraa Barataa Kanaaf Fe'i (Optional for ID Card)", type=["png", "jpg", "jpeg"], key="student_photo_upload_card")
     photo_html = "<div style='width:75px; height:90px; background:#ddd; border-radius:4px; display:inline-block; text-align:center; line-height:90px; font-size:10px; color:#555;'>Suuraa</div>"
@@ -348,68 +356,68 @@ if df is not None:
         base64_img = base64.b64encode(bytes_data).decode('utf-8')
         photo_html = f"<img src='data:image/png;base64,{base64_img}' style='width:75px; height:90px; object-fit:cover; border-radius:4px; border: 1.5px solid #1b5e20;'>"
 
-    if student_list:
-        selected_student = st.selectbox("Barataa Kaardii Eenyummaa isaaf qopheessuuf barbaaddu filadhu:", student_list, key="id_card_student_select")
+    if student_list and selected_student:
+        student_data = df[df[name_col] == selected_student].iloc[0]
+        s_name = student_data[name_col]
+        s_gender = student_data[gender_col] if gender_col in df.columns else "N/A"
         
-        if selected_student:
-            student_data = df[df[name_col] == selected_student].iloc[0]
-            s_name = student_data[name_col]
-            s_gender = student_data[gender_col] if gender_col in df.columns else "N/A"
-            s_grade = student_data[grade_col] if grade_col != "Hin jiru" and grade_col in df.columns else "N/A"
-            s_section = student_data[section_col] if section_col != "Hin jiru" and section_col in df.columns else "N/A"
-            s_id_num = student_data[id_num_col] if id_num_col != "Hin jiru" and id_num_col in df.columns else "N/A"
-            
-            card_html = f"""
-            <!DOCTYPE html>
-            <html>
-            <head>
-                <style>
-                    .card {{
-                        width: 400px;
-                        border: 2.5px solid #1b5e20;
-                        border-radius: 12px;
-                        padding: 15px;
-                        font-family: 'Poppins', Arial, sans-serif;
-                        background: #ffffff;
-                        box-shadow: 0 4px 15px rgba(0,0,0,0.15);
-                        margin: auto;
-                    }}
-                    .flex-container {{ display: flex; align-items: center; gap: 15px; margin-top: 8px; }}
-                    .school-title {{ font-size: 15px; font-weight: bold; color: #1b5e20; text-align: center; text-transform: uppercase; }}
-                    .card-header {{ font-size: 11px; color: #555; text-align: center; margin-bottom: 5px; font-weight: 600; }}
-                    .student-info {{ font-size: 13px; margin: 3px 0; color: #222; }}
-                    .badge-box {{ background-color: #e8f5e9; padding: 4px 8px; border-radius: 6px; display: inline-block; font-weight: bold; color: #1b5e20; font-size: 12px; margin-top: 4px; }}
-                    .footer {{ margin-top: 10px; font-size: 9px; color: #777; border-top: 1px solid #ddd; padding-top: 5px; text-align: center; }}
-                </style>
-            </head>
-            <body>
-                <div class="card">
-                    <div class="school-title">🏫 {school_name_input}</div>
-                    <div class="card-header">KAARDII EENYUMMAA BARATAA (STUDENT ID CARD)</div>
-                    <hr style="border: 0.5px solid #1b5e20; margin: 6px 0;">
-                    <div class="flex-container">
-                        <div>{photo_html}</div>
-                        <div>
-                            <div class="student-info"><b>Maqaa:</b> {s_name}</div>
-                            <div class="student-info"><b>Saala:</b> {s_gender} | <b>Lakk ID:</b> {s_id_num}</div>
-                            <div class="badge-box">Kutaa: {s_grade} &nbsp;|&nbsp; Daree: {s_section}</div>
-                        </div>
+        # Kutaa fi Daree: Yoo achitti itti barreeffame isa fayyadama, yoo duwwaa ta'e immoo Column Excel irraa fudha
+        s_grade = manual_grade if manual_grade else (student_data[grade_col] if grade_col != "Hin jiru" and grade_col in df.columns else "N/A")
+        s_section = manual_section if manual_section else (student_data[section_col] if section_col != "Hin jiru" and section_col in df.columns else "N/A")
+        
+        s_id_num = student_data[id_num_col] if id_num_col != "Hin jiru" and id_num_col in df.columns else "N/A"
+        
+        card_html = f"""
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <style>
+                .card {{
+                    width: 400px;
+                    border: 2.5px solid #1b5e20;
+                    border-radius: 12px;
+                    padding: 15px;
+                    font-family: 'Poppins', Arial, sans-serif;
+                    background: #ffffff;
+                    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+                    margin: auto;
+                }}
+                .flex-container {{ display: flex; align-items: center; gap: 15px; margin-top: 8px; }}
+                .school-title {{ font-size: 15px; font-weight: bold; color: #1b5e20; text-align: center; text-transform: uppercase; }}
+                .card-header {{ font-size: 11px; color: #555; text-align: center; margin-bottom: 5px; font-weight: 600; }}
+                .student-info {{ font-size: 13px; margin: 3px 0; color: #222; }}
+                .badge-box {{ background-color: #e8f5e9; padding: 4px 8px; border-radius: 6px; display: inline-block; font-weight: bold; color: #1b5e20; font-size: 12px; margin-top: 4px; }}
+                .footer {{ margin-top: 10px; font-size: 9px; color: #777; border-top: 1px solid #ddd; padding-top: 5px; text-align: center; }}
+            </style>
+        </head>
+        <body>
+            <div class="card">
+                <div class="school-title">🏫 {school_name_input}</div>
+                <div class="card-header">KAARDII EENYUMMAA BARATAA (STUDENT ID CARD)</div>
+                <hr style="border: 0.5px solid #1b5e20; margin: 6px 0;">
+                <div class="flex-container">
+                    <div>{photo_html}</div>
+                    <div>
+                        <div class="student-info"><b>Maqaa:</b> {s_name}</div>
+                        <div class="student-info"><b>Saala:</b> {s_gender} | <b>Lakk ID:</b> {s_id_num}</div>
+                        <div class="badge-box">Kutaa: {s_grade} &nbsp;|&nbsp; Daree: {s_section}</div>
                     </div>
-                    <div class="footer">TRIAD Analytics App | Designed by Kitesa Negasa</div>
                 </div>
-            </body>
-            </html>
-            """
-            
-            st.components.v1.html(card_html, height=255)
-            
-            st.download_button(
-                label=f"📥 Kaardii {s_name} Buusuu (Download Card HTML)",
-                data=card_html.encode('utf-8'),
-                file_name=f"Kaardii_{s_name}.html",
-                mime="text/html",
-                key=f"download_card_{s_name}"
-            )
+                <div class="footer">TRIAD Analytics App | Designed by Kitesa Negasa</div>
+            </div>
+        </body>
+        </html>
+        """
+        
+        st.components.v1.html(card_html, height=255)
+        
+        st.download_button(
+            label=f"📥 Kaardii {s_name} Buusuu (Download Card HTML)",
+            data=card_html.encode('utf-8'),
+            file_name=f"Kaardii_{s_name}.html",
+            mime="text/html",
+            key=f"download_card_{s_name}"
+        )
 
     # ==========================================
     # WARAQAA RAGAA BARATAA (REPORT CARD)
@@ -424,8 +432,8 @@ if df is not None:
             rc_student_data = df[df[name_col] == selected_student_rc].iloc[0]
             rc_name = rc_student_data[name_col]
             rc_gender = rc_student_data[gender_col] if gender_col in df.columns else "N/A"
-            rc_grade = rc_student_data[grade_col] if grade_col != "Hin jiru" and grade_col in df.columns else "N/A"
-            rc_section = rc_student_data[section_col] if section_col != "Hin jiru" and section_col in df.columns else "N/A"
+            rc_grade = manual_grade if manual_grade else (rc_student_data[grade_col] if grade_col != "Hin jiru" and grade_col in df.columns else "N/A")
+            rc_section = manual_section if manual_section else (rc_student_data[section_col] if section_col != "Hin jiru" and section_col in df.columns else "N/A")
             rc_id_num = rc_student_data[id_num_col] if id_num_col != "Hin jiru" and id_num_col in df.columns else "N/A"
             
             rc_records = []
