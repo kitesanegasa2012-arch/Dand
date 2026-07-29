@@ -71,13 +71,13 @@ if not st.session_state.entered_app:
                 isaaniitiin adda baasuun deggersa barbaachisaa kennuuf kan qopha'edha.
             </p>
             <br>
-            <p style="font-size: 14px; opacity: 0.9;">Designed & Developed by <b>Qixxeessaa Nagaasaa (KN)</b></p>
+            <p style="font-size: 14px; opacity: 0.9;">Designed & Developed by <b>Kitesa Negasa Feyisa</b></p>
         </div>
     """, unsafe_allow_html=True)
     
     col_cov1, col_cov2, col_cov3 = st.columns([1, 2, 1])
     with col_cov2:
-        if st.button("🚀 Gara Appii Seenuuf (Enter Dashboard)", use_container_width=True, key="enter_app_main_button"):
+        if st.button("🚀 Gara Appii kanaa Seenuuf (Enter Dashboard)", use_container_width=True, key="enter_app_main_button"):
             st.session_state.entered_app = True
             st.rerun()
     st.stop()
@@ -105,7 +105,7 @@ else:
 
 st.sidebar.markdown("### 📝 Seensa (Introduction)")
 st.sidebar.write(
-    "Appiinkun Kutaalee Gurguddoo kudhan(10) kan of keessaa qabuu fi manneen barnotaa sadarkaa 1ffaa(1-6), "
+    "Barnoonni bu'uura misoomaa fi guddina hawaasaati. Sadarkaa amma irra jirruutti, saffisi fi qulqullinni barnootaa akka fooyya’uuf tooftaa ammayyaa’aa fayyadamuun dirqama ta’a. Akkaataa kanaan, rakkoolee qormaataa fi madaallii barattootaa keessatti mul’atan hiikuuf, akkasumas barsiisotaaf qorannoo dandeettii saffisaa (Diagnostic Assessment) kennuuf appilikeeshinii haaraa maqaan isaa TRIAD (Tracking Rates In Academic Development) jedhamu qopheesseera. Appiin kun sadarkaa mana barumsaa Aanaa Meettaa Walqixxeetti qulqullina barnootaa mirkaneessuuf shoora olaanaa qaba., "
     "sadarkaa giddugaleessaa(7-8) fi sadarkaa 2ffaa(9-12) keessatti tajaajila kennuu kan danda'udha."
 )
 
